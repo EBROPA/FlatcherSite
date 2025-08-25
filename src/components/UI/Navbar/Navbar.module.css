@@ -14,8 +14,6 @@
   right: 0;
   z-index: 1000;
   align-items: center;
-
-  /* усиленный blur и фон */
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   background: var(--nav-fill);
@@ -44,7 +42,6 @@
   box-sizing: border-box;
 }
 
-/* =================== GRID (12 columns) =================== */
 .grid {
   height: 100%;
   display: grid;
@@ -54,6 +51,9 @@
   box-sizing: border-box;
   min-width: 0; /* важно для корректного сжатия */
 }
+
+/* TEST CHANGE FOR AUTO VERSIONING - REMOVE THIS LINE */
+.test-auto-versioning { color: red; }
 
 .leftLogoGroup {
   display: flex;
