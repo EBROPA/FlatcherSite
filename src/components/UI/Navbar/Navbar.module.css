@@ -1,12 +1,11 @@
 :root{
   --cols: 12;
   --gutter: clamp(12px, 1.6vw, 20px);
-  --nav-height: clamp(48px, 4.5vh, 72px);
+  --nav-height: clamp(60px, 4.5vh, 72px);
   --max-w: 1420px; /* ограничиваем ширину контейнера, чтобы сетка вела себя предсказуемо */
   --nav-fill: rgba(22, 22, 22, 0.79); /* новый фон/заполнитель навбара */
 }
 
-/* =================== NAVBAR / CONTAINER =================== */
 .navbar {
   display: flex;
   position: fixed;

@@ -18,6 +18,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.page-content {
+  padding: 66px 12px 0 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .page-content.fullscreen {
   padding: 0;
 }

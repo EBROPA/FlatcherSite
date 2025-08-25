@@ -59,7 +59,7 @@ const Navbar = () => {
                   className={`${styles.phoneIcon} ${styles.phoneIconMobile}`}
                 />
               </div>
-              <span className={styles.phoneNumber}>+7 (977) 174-01-79</span>
+              <span className={styles.phoneNumber}>+7 (495) 032-21-99</span>
             </a>
 
             <div className={styles.iconContainer}>
