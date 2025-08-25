@@ -1,0 +1,36 @@
+.pager {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.pagerItems {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  gap: 4px;
+}
+
+.pagerItem {
+  display: flex;
+  align-items: center;
+}
+
+.pagerItem button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #eee;
+  color: #333;
+  font-weight: bold;
+}
+
+.pagerItem button:hover {
+  background: #ddd;
+}
+
+.pagerItem.active button {
+  background: #FAD02E;
+  color: #000;
+}

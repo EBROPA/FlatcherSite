@@ -1,0 +1,305 @@
+:root{
+  --cols: 12;
+  --gutter: clamp(12px, 1.6vw, 20px);
+  --nav-height: clamp(48px, 4.5vh, 72px);
+  --max-w: 1420px; /* ограничиваем ширину контейнера, чтобы сетка вела себя предсказуемо */
+  --nav-fill: rgba(22, 22, 22, 0.79); /* новый фон/заполнитель навбара */
+}
+
+/* =================== NAVBAR / CONTAINER =================== */
+.navbar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  align-items: center;
+
+  /* усиленный blur и фон */
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  background: var(--nav-fill);
+
+  /* если нужно, чтобы inline SVG внутри наследовали цвет (white/contrast) */
+  color: white;
+  fill: var(--nav-fill); /* задаёт fill у самого контейнера (полезно для SVG-фона) */
+
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+/* Inline SVG внутри навбара будут наследовать currentColor,
+   поэтому если нужно, чтобы они были белыми — они уже будут white через color */
+.navbar svg {
+  fill: currentColor;
+  stroke: none;
+}
+
+/* Центрируем контент и ограничиваем максимальную ширину */
+.container {
+  width: min(100%, var(--max-w));
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* =================== GRID (12 columns) =================== */
+.grid {
+  height: 100%;
+  display: grid;
+  gap: var(--gutter);
+  grid-template-columns: repeat(var(--cols), 1fr);
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 0; /* важно для корректного сжатия */
+}
+
+.leftLogoGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  grid-column: 2;
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 2rem);
+  height: 100%;
+  min-width: 0;
+  grid-column: 4 / 10;
+  box-sizing: border-box;
+}
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  height: 100%;
+  grid-column: 10 / 12;
+  justify-self: end;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.bigLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.logo {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+/* логотипы остаются белыми (через color) — если нужно индивидуально, переопредели */
+.logo img {
+  height: calc(var(--nav-height) * 0.4);
+  max-height: 40px;
+  width: auto;
+  display: inline-block;
+}
+
+.noTextLogo {
+  /* пример: можно переопределить из JSX через className */
+  /* height: 2rem; */
+}
+
+/* =================== MENU (сжимаемый) =================== */
+/* Меню — flex, может сжиматься; переполнение обрезается */
+.menu {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 1.2vw, 1rem);
+  height: 67%;
+  flex: 1 1 0%;
+  min-width: 0;          /* важно для работы с grid */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Пункты меню — не растягиваются, показывают ellipsis при нехватке места */
+.menuItem {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 clamp(0.5rem, 1.2vw, 1rem);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 8px;
+  text-decoration: none;
+  flex: 0 0 auto;
+  max-width: 12rem; /* ограничивает слишком длинные пункты */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menuItem:hover {
+  background-color: rgba(110, 110, 129, 0.82);
+}
+
+/* Ссылка внутри пункта — тоже с ellipsis */
+.link {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-size: clamp(0.62rem, 1.2vw, 0.9rem);
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =================== PHONE / ICONS =================== */
+.phoneBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 0.5rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  border-radius: 8px;
+  height: 67%;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.phoneBlock:hover {
+  background-color: rgba(110, 110, 129, 0.12);
+}
+
+.phoneNumber {
+  font-weight: bold;
+  font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+  display: inline-block;
+  transition: opacity 0.2s ease;
+  color: white;
+}
+
+/* icon wrappers */
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+  cursor: pointer;
+  padding: 0.7rem;
+  text-decoration: none;
+}
+
+.phoneIcon {
+  height: 20px;
+  padding-right: 0.5rem;
+  filter: invert(1);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.watsappIcon, .telegramIcon {
+  display: block;
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.telegramIcon {
+  width: 30px !important;
+  height: 30px !important;
+  object-fit: contain;
+}
+
+.iconContainer {
+  height: 67%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 160px;
+}
+
+.iconContainer:hover {
+  background-color: rgba(110, 110, 129, 0.12);
+}
+
+.phoneIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phoneIconMobile { display: none; }
+.phoneIconDesktop { display: block; }
+
+/* =================== RESPONSIVE =================== */
+/* При <=1200px — скрываем номер, уменьшаем gap/padding, чтобы не переходило в 2 строки */
+@media (max-width: 1200px) {
+  .menu { gap: 0.5rem; }
+  .menuItem { padding: 0 0.6rem; max-width: 9rem; }
+  .link { font-size: clamp(0.58rem, 1.0vw, 0.82rem); }
+  .phoneNumber { display: none; } /* остаётся только иконка */
+  .grid { gap: clamp(8px, 1vw, 14px); }
+  .leftLogoGroup { grid-column: 1 / 3; }
+  .leftGroup { grid-column: 5 / 10; }
+  .rightGroup { grid-column: 11 / 13; }
+}
+
+/* На tablet — можно дополнительно уменьшить элементы */
+@media (max-width: 900px) {
+  .menu { gap: 0.45rem; }
+  .menuItem { padding: 0 0.5rem; max-width: 8.5rem; }
+  .link { font-size: clamp(0.56rem, 1.0vw, 0.78rem); }
+  .leftLogoGroup { grid-column: 1 / 3; }
+  .leftGroup { grid-column: 5 / 10; }
+  .rightGroup { grid-column: 10 / 13; }
+}
+
+/* На мобильных полностью скрываем меню и оптимизируем иконки */
+@media (max-width: 751px) {
+  .menu { display: none; }
+  .leftLogoGroup { grid-column: 1 / 3; gap: 0.5rem; }
+  .rightGroup { grid-column: 11 / 13; justify-self: end; }
+
+  .phoneIconWrapper {
+    width: 36px;
+    height: 36px;
+    background-color: #015ff9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .phoneIconMobile {
+    display: block;
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: invert(1);
+    padding: 0;
+    margin: 0;
+  }
+
+  .phoneIcon {
+    width: 18px;
+    height: 18px;
+    filter: invert(1);
+  }
+
+  .iconContainer { display: none; }
+  .phoneIconDesktop { display: none; }
+}

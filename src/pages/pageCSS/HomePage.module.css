@@ -1,0 +1,47 @@
+:root {
+  /* --vh корректируется скриптом: 1vh = var(--vh, 1vh) */
+}
+
+/* сброс дефолтных отступов (если ещё не сброшены глобально) */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Полноэкранный блок; использует --vh чтобы корректно работать на iOS/Android */
+.hero {
+  width: 100vw; /* занимает всю ширину окна */
+  height: calc(var(--vh, 1vh) * 100); /* = 100vh (с учётом мобильного багa) */
+  min-height: 100vh; /* страховка */
+  background-repeat: no-repeat;
+  background-size: cover;          /* ключ: масштабируем и обрезаем по сторонам */
+  background-position: center center; /* центрируем — боковые части будут обрезаться */
+  background-attachment: scroll;   /* не фиксируем (фикс элемент вызывает проблемы на мобильных) */
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+/* дополнительный центрированный контейнер для контента (по желанию) */
+.centerContent {
+  position: relative;
+  z-index: 2;
+  width: min(1200px, 95%);
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* текст/кнопки внутри здесь */
+}
+
+/* опционально: лёгкий тёмный оверлей (убирайте если не нужен) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.08);
+  z-index: 1;
+  pointer-events: none;
+}
