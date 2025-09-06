@@ -1,0 +1,215 @@
+.footer {
+  background: #111;
+  margin-top: 2rem;
+  color: #ccc;
+  font-family: sans-serif;
+}
+
+.footerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 2rem;
+}
+
+.logo {
+  height: 40px;
+}
+
+.contactBlock {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.phone {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.7rem;
+}
+
+.phone:hover {
+  color: #53adb6;
+}
+
+.cta {
+  background: #53adb6;
+  color: white;
+  border: none;
+  padding: 1rem 5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.cta:hover {
+  color: black;
+  background: white;
+}
+
+.servicesMenu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 2.5rem;
+  padding: 1.5rem 2rem;
+  margin: 0;
+  list-style: none;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+
+.servicesLink {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.servicesLink:hover {
+  color: #53adb6;
+}
+
+.infoWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.info {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info p,
+.info a {
+  margin: 0;
+  color: #ccc;
+  text-decoration: none;
+}
+
+.socialList {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.newsletter {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.newsletter input {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.newsletter button {
+  background: #e5c4b0;
+  border: none;
+  padding: 0 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.policy {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.policy input {
+  margin-top: 0.2rem;
+}
+
+.columns {
+  display: flex;
+  flex: 2 1 auto;
+  justify-content: space-around;
+}
+
+.column {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 2rem;
+}
+
+.columnLink {
+  color: #ccc;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.columnLink:hover {
+  color: #53adb6;
+}
+
+.bottom {
+  border-top: 1px solid #333;
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.footerEnd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: center;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-top: 1px solid #333;
+  list-style: none;
+}
+
+.footerEndItem {
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+.footerLink {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+}
+
+.cedroLink {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ccc;
+  text-decoration: none;
+}
+
+.cedroIcon .icn {
+  fill: currentColor;
+}
+
+@media (max-width: 768px) {
+  .contactBlock {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .phone {
+    font-size: 1.4rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .cta {
+    width: 100%;
+  }
+}

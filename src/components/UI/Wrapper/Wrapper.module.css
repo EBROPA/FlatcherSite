@@ -1,0 +1,39 @@
+.wrapperGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.card:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.cardImage {
+  width: 100%;
+  height: clamp(250px, 25vw, 400px);
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+}
+
+.cardInfo {
+
+  padding: 1rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}

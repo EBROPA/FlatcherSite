@@ -1,0 +1,30 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  overflow-y: auto;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+body {
+  --font-family: "Montserrat", sans-serif;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page-content {
+  padding: 66px 12px 0 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.page-content.fullscreen {
+  padding: 0;
+}
+
