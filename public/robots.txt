@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Host: https://flatcher.su
+
+Sitemap: https://flatcher.su/sitemap.xml
+

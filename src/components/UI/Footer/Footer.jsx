@@ -1,88 +1,97 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "./Footer.module.css";
-import logoUrl from "@assets/img/flatcher-icon.jpg";
-import CallbackModal from "../CallbackModal/CallbackModal";
+import React, { useState } from 'react';
+import styles from './Footer.module.css';
+
+import flatcherFooter from '../../../../assets/svg/flatcher-foter.svg';
+import flatcherFooterMobile from '../../../../assets/img/flathcer-mobile-foter.png';
+import whatsappIcon from '../../../../assets/svg/whatsapp-icon.svg';
+import telegramIcon from '../../../../assets/svg/telegram-icons.svg';
+import CallbackModal from '../CallbackModal/CallbackModal';
 
 export default function Footer() {
-  const services = [
-    { label: "О Компании", to: "/company" },
-    { label: "Аналитика", to: "/catalog/flat" },
-    { label: "Консалтинг", to: "/catalog/flat" },
-    { label: "Инвестиции", to: "/catalog/retail" },
-    { label: "Контакты", to: "/contacts/" },
-  ];
+  const year = new Date().getFullYear();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const city = [
-    { label: "Квартира",   to: "/catalog/flat"   },
-    { label: "Пентхаус",   to: "/catalog/flat"   },
-    { label: "Апартаменты",to: "/catalog/flat"   },
-    { label: "Новостройки",to: "/catalog/flat"   },
-  ];
-  const abroad = [
-    { label: "Таунхаус",   to: "/catalog/flat"   },
-    { label: "Квартира",   to: "/catalog/flat"   },
-    { label: "Особняк",    to: "/catalog/flat"   },
-    { label: "Пентхаус",   to: "/catalog/flat"   },
-  ];
-  const comm = [
-    { label: "Коммерческая",    to: "/catalog/retail" },
-    { label: "Офис",            to: "/catalog/retail" },
-    { label: "Особняк",         to: "/catalog/retail" },
-    { label: "Ритейл",          to: "/catalog/retail" },
-  ];
-
-  const [modalOpen, setModalOpen] = useState(false);
+  const handleCtaClick = (event) => {
+    event.preventDefault();
+    setIsModalOpen(true);
+  };
 
   return (
-      <footer className={styles.footer}>
-        <div className={styles.footerTop}>
-          <Link to="/" aria-label="home">
-            <img src={logoUrl} alt="FLATCHER" className={styles.logo}/>
-          </Link>
-          <div className={styles.contactBlock}>
-            <a href="tel:+79771740179" className={styles.phone}>
-              +7 977 174‑01‑79
+    <footer className={styles.footer}>
+      <div className={styles.bgWrap} aria-hidden="true">
+        <img src={flatcherFooter} alt="" className={styles.bgImageBase} loading="lazy" decoding="async" />
+        <img src={flatcherFooter} alt="" className={styles.bgImageBlur} loading="lazy" decoding="async" />
+        <div className={styles.bgShade} />
+      </div>
+
+      <div className={styles.content}>
+        <div className={styles.mobileHero}>
+          <img
+            src={flatcherFooterMobile}
+            alt="Flatcher"
+            className={styles.mobileLogo}
+            loading="lazy"
+            decoding="async"
+          />
+          <a className={styles.mobilePhone} href="tel:+74950322199">+7 (495) 032-21-99</a>
+          <button type="button" className={styles.mobileCallBtn} onClick={handleCtaClick}>Заказать звонок</button>
+          <div className={styles.mobileSocials}>
+            <a href="https://wa.me/74950322199" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <img src={whatsappIcon} alt="WhatsApp" loading="lazy" decoding="async" className={`${styles.whatsappIcon} ${styles.mobileIcon}`} />
             </a>
-            <button className={styles.cta} onClick={() => setModalOpen(true)}>Заказать звонок</button>
-            <CallbackModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+            <a href="https://t.me/FlatcherEstateBot" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+              <img src={telegramIcon} alt="Telegram" loading="lazy" decoding="async" className={`${styles.telegramIcon} ${styles.mobileIcon}`} />
+            </a>
           </div>
         </div>
 
-        <ul className={styles.servicesMenu}>
-          {services.map((s) => (
-              <li key={s.to}>
-                <Link to={s.to} className={styles.servicesLink}>
-                  {s.label}
-                </Link>
-              </li>
-          ))}
-        </ul>
+        <div className={styles.primaryRow}>
+          <nav className={styles.links} aria-label="Footer navigation">
+            <ul className={styles.linkCol}>
+              <li><a href="/company">О компании</a></li>
+              <li><a href="/contacts">Контакты</a></li>
+              <li><a href="/company#team">Команда</a></li>
+            </ul>
+            <ul className={styles.linkCol}>
+              <li><a href="/flats">Новостройки</a></li>
+              <li><a href="/services">Услуги</a></li>
+            </ul>
+          </nav>
 
-        <div className={styles.infoWrap}>
-          <div className={styles.columns}>
-            {[city, abroad, comm].map((col, idx) => (
-                <ul key={idx} className={styles.column}>
-                  {col.map(({label, to}) => (
-                      <li key={label}>
-                        <Link to={to} className={styles.columnLink}>
-                          {label}
-                        </Link>
-                      </li>
-                  ))}
-                </ul>
-            ))}
+          <div className={styles.phoneBlock}>
+            <a className={styles.phone} href="tel:+74950322199">+7 (495) 032-21-99</a>
+            <button type="button" className={styles.callBtn} onClick={handleCtaClick}>ЗАКАЗАТЬ ЗВОНОК</button>
+            <div className={styles.socials}>
+              <a href="https://wa.me/74950322199" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                <img src={whatsappIcon} alt="WhatsApp" loading="lazy" decoding="async" className={styles.whatsappIcon} />
+              </a>
+              <a href="https://t.me/FlatcherEstateBot" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+                <img src={telegramIcon} alt="Telegram" loading="lazy" decoding="async" className={styles.telegramIcon} />
+              </a>
+            </div>
           </div>
         </div>
+      </div>
 
-        <ul className={styles.footerEnd}>
-          <li className={styles.footerEndItem}>©FLATCHER, 2025</li>
-          <li className={styles.footerEndItem}>
-            <Link to="/privacy/" className={styles.footerLink}>
-              Политика конфиденциальности
-            </Link>
-          </li>
-        </ul>
-      </footer>
+      <div className={styles.bottomBar}>
+        <p className={styles.disclaimer}>
+          Сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями пункта 2 статьи 437 Гражданского кодекса Российской Федерации. Использование сайта означает согласие с&nbsp;
+          <a href="/user-agreement" target="_blank">Пользовательским соглашением</a>
+          ,&nbsp;
+          <a href="/data-processing" target="_blank">Политикой обработки персональных данных и файлов Cookie</a>
+          &nbsp;и&nbsp;
+          <a href="/consent" target="_blank">Согласием на обработку персональных данных</a>.
+        </p>
+        <div className={styles.copyright}>©FLATCHER, {year}</div>
+      </div>
+
+      <CallbackModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        prefill={{}}
+      />
+    </footer>
   );
 }
+
+

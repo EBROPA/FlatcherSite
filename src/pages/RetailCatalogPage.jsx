@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Wrapper from "../components/UI/Wrapper/Wrapper";
 import Pagination from "../components/UI/Pagination/Pagination";
 import classes from "../components/UI/Wrapper/Wrapper.module.css";
-import image from "./tempIMG/hordinka2.jpg"
+import image from "../../assets/img/hordinka2.jpg"
 
 function RetailCatalogPage() {
   const [searchParams] = useSearchParams();
@@ -31,7 +31,7 @@ function RetailCatalogPage() {
         items={currentItems}
         renderItem={(item) => (
           <div className="card" key={item.id}>
-            <img src={item.image} alt={item.title} className={classes.cardImage} />
+            <img src={item.image} alt={item.title} className={classes.cardImage} loading="lazy" decoding="async" />
             <div className={classes.cardInfo}>
               <h3>{item.title}</h3>
               <p>{item.location}</p>

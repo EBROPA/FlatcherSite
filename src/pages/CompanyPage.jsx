@@ -9,7 +9,7 @@ function CompanyPage() {
       <div className={style.hero}>
         <div className={style.heroContent}>
           <div className={style.logoSection}>
-            <img src={logo} alt="FLATCHER" className={style.logo} />
+            <img src={logo} alt="FLATCHER" className={style.logo} loading="lazy" decoding="async" />
           </div>
           <h1 className={style.heroTitle}>О компании FLATCHER</h1>
           <p className={style.heroSubtitle}>
@@ -135,7 +135,7 @@ function CompanyPage() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
   );
 }
 

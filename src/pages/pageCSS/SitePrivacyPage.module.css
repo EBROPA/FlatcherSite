@@ -11,7 +11,15 @@
 .heading {
   text-align: center;
   font-size: 1.5rem;
-  color: #53adb6;
+  color: #111;
+}
+
+.lead {
+  margin-bottom: 1.5rem;
+  color: #333;
+  line-height: 1.6;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .sections {

@@ -1,36 +1,69 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 import Navbar from './components/UI/Navbar/Navbar';
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import Breadcrumbs from "./components/UI/Breadcrumbs/Breadcrumbs";
 import HomePage from './pages/HomePage';
-import FlatCatalogPage from "./pages/FlatCatalogPage";
 import ContactsPage from "./pages/ContactsPage";
-import CompanyPage from "./pages/CompanyPage";
-import RetailCatalogPage from "./pages/RetailCatalogPage";
 import SitePrivacyPage from "./pages/SitePrivacyPage";
-import Footer from "./components/UI/Footer/Footer";
+import UserAgreementPage from "./pages/UserAgreementPage";
+import DataProcessingPolicy from "./pages/DataProcessingPolicy";
+import PersonalDataConsentPage from "./pages/PersonalDataConsentPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import Footer from './components/UI/Footer/Footer';
 import './styles.css'
 
 export default function App() {
     const { pathname } = useLocation();
     const isHome = pathname === "/";
 
+    const knownPaths = new Set([
+      "/",
+      "/flats",
+      "/retail",
+      "/services",
+      "/company",
+      "/contacts",
+      "/privacy",
+      "/user-agreement",
+      "/data-processing",
+      "/consent"
+    ]);
+
+    const showBreadcrumbs = !isHome && knownPaths.has(pathname);
+
   return (
     <>
+      <Helmet>
+        <html lang="ru" />
+        <meta name="author" content="Flatcher" />
+        <meta name="robots" content="index,follow" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://flatcher.su" />
+        <meta property="og:image" content="https://flatcher.su/preview.jpg" />
+        <title>Агентство элитной недвижимости Flatcher в Москве</title>
+        <meta name="description" content="Агентство элитной недвижимости Flatcher в Москве: подбор квартир и коммерческих объектов, сопровождение сделок и инвестиционные консультации." />
+        <meta
+          name="keywords"
+          content="элитная недвижимость Москва, Flatcher, премиальные квартиры, коммерческая недвижимость, агентство элитной недвижимости" />
+      </Helmet>
       <Navbar />
       <ScrollToTop />
-        <main className={`page-content ${isHome ? 'fullscreen' : ''}`}>
-            <Routes>
-                <Route path="/" element={<HomePage />}/>
-                <Route path="/catalog/flat" element={<FlatCatalogPage />}/>
-                <Route path="/catalog/retail" element={<RetailCatalogPage />}/>
-                <Route path="/company" element={<CompanyPage />}/>
-                <Route path="/contacts" element={<ContactsPage />}/>
-                <Route path="/privacy" element={<SitePrivacyPage />} />
-            </Routes>
-        </main>
-        <Footer />
+      <main className={`page-content ${isHome ? 'fullscreen' : ''}`}>
+        {showBreadcrumbs && <Breadcrumbs />}
+        <Routes>
+          <Route path="/" element={<HomePage />}/>
+          <Route path="/contacts" element={<ContactsPage />}/>
+          <Route path="/privacy" element={<SitePrivacyPage />} />
+          <Route path="/user-agreement" element={<UserAgreementPage />} />
+          <Route path="/data-processing" element={<DataProcessingPolicy />} />
+          <Route path="/consent" element={<PersonalDataConsentPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
+      <Footer />
     </>
   );
 }

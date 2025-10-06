@@ -1,29 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function ScrollManager() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const saveScroll = () => {
-      localStorage.setItem("scrollX", window.scrollX);
-      localStorage.setItem("scrollY", window.scrollY);
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     };
 
-    window.addEventListener("beforeunload", saveScroll);
-    return () => window.removeEventListener("beforeunload", saveScroll);
-  }, []);
+    scrollToTop();
 
-  useEffect(() => {
-    const x = parseInt(localStorage.getItem("scrollX") || "0", 10);
-    const y = parseInt(localStorage.getItem("scrollY") || "0", 10);
+    const rafId = requestAnimationFrame(scrollToTop);
 
-    window.scrollTo({ top: y, left: x, behavior: "smooth" });
-  }, []);
-
-  useEffect(() => {
-    window.scroll(0, 0)
-  }, [pathname])
+    return () => cancelAnimationFrame(rafId);
+  }, [pathname]);
 
   return null;
 }

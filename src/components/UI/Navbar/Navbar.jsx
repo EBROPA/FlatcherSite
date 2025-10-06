@@ -8,12 +8,12 @@ import phone_icon from "@assets/svg/phone-icon-test.svg";
 import burger_icon from "@assets/svg/burger.svg";
 
 const Navbar = () => {
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 768);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 900);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      setIsDesktop(window.innerWidth > 768);
+      setIsDesktop(window.innerWidth > 900);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -65,10 +65,10 @@ const Navbar = () => {
           </div>
           <div className={styles.leftGroup}>
             <div className={styles.menu}>
-              <Link to="/catalog/flat" className={styles.menuItem}>
+              <Link to="/flats" className={styles.menuItem}>
                 <span className={styles.link}>НОВОСТРОЙКИ</span>
               </Link>
-              <Link to="/catalog/services" className={styles.menuItem}>
+              <Link to="/services" className={styles.menuItem}>
                 <span className={styles.link}>УСЛУГИ</span>
               </Link>
               <Link to="/company" className={styles.menuItem}>
@@ -139,10 +139,10 @@ const Navbar = () => {
       {!isDesktop && (
         <div className={`${styles.mobileMenu} ${isMenuOpen ? styles.open : ''}`}>
           <div className={styles.mobileMenuContent}>
-            <Link to="/catalog/flat" className={styles.mobileMenuItem} onClick={() => setIsMenuOpen(false)}>
+            <Link to="/flats" className={styles.mobileMenuItem} onClick={() => setIsMenuOpen(false)}>
               <span className={styles.mobileMenuLink}>НОВОСТРОЙКИ</span>
             </Link>
-            <Link to="/catalog/services" className={styles.mobileMenuItem} onClick={() => setIsMenuOpen(false)}>
+            <Link to="/services" className={styles.mobileMenuItem} onClick={() => setIsMenuOpen(false)}>
               <span className={styles.mobileMenuLink}>УСЛУГИ</span>
             </Link>
             <Link to="/company" className={styles.mobileMenuItem} onClick={() => setIsMenuOpen(false)}>

@@ -1,8 +1,869 @@
+.page-content:not(.fullscreen) .breadcrumbsWrapper {
+  margin-bottom: 16px;
+}
+
+/* Подложка под скругления, чтобы углы совпадали с цветом верхнего блока */
+.filterWrap {
+  background: #080808; /* ПК фон сверху */
+}
+
+@media (max-width: 768px) {
+  /* Верхние углы – #34260E, нижние – #080808 */
+  .filterWrap {
+    background: linear-gradient(
+      to bottom,
+      #34260E 0,
+      #34260E 32px, /* высота скругления верхних углов */
+      #080808 32px,
+      #080808 100%
+    );
+  }
+}
+
+/* ----- About block ----- */
+.aboutSection {
+  height: 85vh;
+  min-height: 520px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #080808; /* выравниваем фон с нижней частью filterWrap */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+
+.aboutInner {
+  max-width: 980px;
+  padding: 0 16px;
+}
+
+.aboutTitle {
+  font-weight: 800;
+  font-size: clamp(40px, 6vw, 60px);
+  letter-spacing: 0.04em;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  padding-bottom: 20px;
+}
+
+.aboutText {
+  font-size: 24px;
+  margin: 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.aboutTextMobile { display: none; }
+
+@media (max-width: 768px) {
+  .aboutText { display: none; }
+  .aboutTextMobile {
+    display: block;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 auto; /* центрируем блок относительно экрана */
+    width: 90%;
+    max-width: 560px; /* ограничиваем ширину, чтобы строки не тянулись */
+    text-align: left;
+  }
+  .aboutSection {
+    height: 70vh;
+  }
+}
+.gold { color: #9B722E; font-weight: 800; }
+
+/* Маска-переход, чтобы не было линии на стыке скруглённых углов и следующего блока */
+.aboutSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 36px; /* примерно радиус скругления */
+  background: linear-gradient(#080808 0, rgba(8,8,8,0) 100%);
+  pointer-events: none;
+}
+
+/* ----- CTA Banner ----- */
+.ctaBanner {
+  height: 15vh;
+  background: #9B722E;
+  color: #fff;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  margin: -30px auto 0; /* поднимаем баннер на 10px */
+  position: relative;
+  z-index: 3; /* поверх aboutSection */
+}
+
+.ctaBannerText {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(25px, 1.1vw, 28px);
+  font-family: var(--font-family);
+  text-transform: uppercase;
+  text-align: left;
+  flex: 1 1 auto;
+  margin-right: 24px;
+  margin-left: 3%;
+}
+
+.ctaBannerTextMobile { display: none; }
+
+.ctaBannerBtn {
+  background: #0B0B0B;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 20px 80px;
+  font-weight: 800;
+  font-size: 25px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-right: 3%;
+  transition: all 0.3s ease;
+}
+
+.ctaBannerBtn:hover {
+  background: #fff;
+  color: #080808;
+}
+
+@media (max-width: 768px) {
+  .ctaBanner {
+    height: auto;
+    padding: 20px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .ctaBannerText {
+    font-family: var(--font-family);
+    font-weight: 800;
+    font-size: 25px;
+    text-transform: uppercase;
+    color: #fff;
+    text-align: left;
+    line-height: 1.2;
+  }
+  .ctaBannerText { display: none; }
+  .ctaBannerTextMobile {
+    display: block;
+    font-family: var(--font-family);
+    font-weight: 800;
+    font-size: 25px;
+    text-transform: uppercase;
+    color: #fff;
+    text-align: left;
+    line-height: 1.2;
+  }
+  .ctaBannerBtn {
+    align-self: center;
+    width: 100%;
+    white-space: nowrap; /* текст кнопки в одну строку */
+    padding: 16px 24px;
+    font-size: 24px;
+  }
+}
+
+/* ===== Offers (Лучшие предложения) ===== */
+.offersSection {
+  width: min(1200px, 95%);
+  margin: 56px auto 0;
+}
+
+.offersTitle {
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 48px);
+  text-transform: uppercase;
+  color: #0B0B0B;
+  margin: 0 0 24px;
+}
+
+.offersGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  column-gap: 12px;
+  row-gap: 12px;
+}
+
+.offerCard {
+  display: grid;
+  grid-template-columns: 1.2fr 1.1fr;
+  align-items: stretch;
+  border: 2px solid #0B0B0B; /* рамка карточки 2px, как по макету */
+  border-radius: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Dark variant (right top card) */
+.offerCardDark {
+  background: #0B0B0B;
+  color: #fff;
+  grid-template-columns: 1fr 1fr;
+}
+
+.offerMedia,
+.offerMediaRight {
+  position: relative;
+  overflow: hidden;
+}
+
+.offerMedia img,
+.offerMediaRight img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border: 0 !important; /* убираем обводку у фото */
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.offerContent,
+.offerContentDark {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.offerHeadline {
+  font-weight: 800;
+  font-size: clamp(26px, 3vw, 44px);
+  line-height: 1.05;
+  color: #0B0B0B;
+}
+
+.offerCardDark .offerHeadline { color: #fff; }
+.offersGrid > .offerCard:nth-child(2) .offerHeadline { color: #9B722E; }
+.offersGrid > .offerCard:nth-child(4) .offerHeadline { color: #9B722E; }
+
+.offerPrefix { color: #0B0B0B; font-weight: 800; }
+.offerCardDark .offerPrefix { color: #fff; }
+
+.offerSub {
+  margin-top: 12px;
+  font-weight: 800;
+  color: #0B0B0B;
+}
+
+.offerCardDark .offerSub { color: #d9d9d9; }
+.offersGrid > .offerCard:nth-child(2) .offerSub { color: #fff; }
+
+.offerBtn {
+  align-self: flex-start;
+  background: #0B0B0B;
+  color: #fff;
+  border: 2px solid #ffffff; /* белая обводка 2px для чёрных кнопок */
+  border-radius: 16px;
+  padding: 12px 24px;
+  font-weight: 800;
+  cursor: pointer;
+  position: relative; /* чтобы перекрывать фото */
+  z-index: 900; /* выше фото, но ниже модалки (1000) */
+  transition: all 0.3s ease;
+}
+
+.offerBtn:hover { background: #ffffff; color: #0B0B0B; border: 2px solid #0B0B0B;}
+.offerBtn:active { opacity: .9; }
+.offerBtnDark { background: #9B722E; }
+.offerBtnDark:hover { background: #ffffff; color: #9B722E; border: 2px solid #9B722E;}
+
+/* Grid placement to mimic screenshot */
+.offersGrid > .offerCard:nth-child(1) { grid-column: 1 / span 8; grid-row: 1; }
+.offersGrid > .offerCard:nth-child(2) { grid-column: 9 / span 4; grid-row: 1; }
+.offersGrid > .offerCard:nth-child(2) {
+  background: #0B0B0B;
+  overflow: visible; /* показать части фото, выходящие за карточку */
+}
+.offersGrid > .offerCard:nth-child(3) { grid-column: 1 / span 6; grid-row: 2; }
+.offersGrid > .offerCard:nth-child(4) { grid-column: 7 / span 6; grid-row: 2; }
+
+/* Card-specific layout tuning */
+/* 1) ЖК Мира — фото покрывает весь блок, контент поверх слева */
+.offersGrid > .offerCard:nth-child(1) { position: relative; grid-template-columns: 1fr; }
+.offersGrid > .offerCard:nth-child(1) .offerMediaRight {
+  position: absolute;
+  inset: 0;
+  z-index: 4; /* фото поверх текста */
+}
+.offersGrid > .offerCard:nth-child(1) .offerMediaRight img { object-position: center; }
+.offersGrid > .offerCard:nth-child(1) .offerContent {
+  position: relative;
+  z-index: auto; /* не создаём собственный stacking-context, чтобы кнопка могла перекрыть фото */
+  max-width: 55%;
+  background: transparent; /* фон убираем, чтобы подпись могла быть поверх фото */
+  padding-top: 8px; /* немного выше текст */
+}
+
+/* Белый фон только под заголовком, как на макете */
+.offersGrid > .offerCard:nth-child(1) .offerHeadline {
+  display: inline-block;
+  background: #ffffff;
+  padding: 2px 0;
+}
+
+/* Подпись поверх фото */
+.offersGrid > .offerCard:nth-child(1) .offerSub {
+  position: relative;
+  z-index: 5;
+  background: transparent;
+}
+
+/* 2) ONE TOWER — фото прижато к правому краю внутри блока */
+.offersGrid > .offerCard:nth-child(2) .offerMediaRight img { object-position: right center; }
+.offersGrid > .offerCard:nth-child(2) { position: relative; }
+.offersGrid > .offerCard:nth-child(2) .offerMediaRight {
+  z-index: 400; pointer-events: none; /* фото ниже кнопки */
+  position: absolute; top: 0; right: 0; bottom: 0; left: auto;
+  overflow: visible !important; /* не обрезаем фото контейнером */
+}
+.offersGrid > .offerCard:nth-child(2) .offerMediaRight img {
+  height: 100%; width: auto; /* сохраняем размер и пропорции */
+  object-fit: contain; object-position: right center;
+}
+.offersGrid > .offerCard:nth-child(2) .offerContentDark { z-index: auto; }
+.offersGrid > .offerCard:nth-child(2) .offerContentDark {
+  position: relative;
+}
+.offersGrid > .offerCard:nth-child(2) .offerContentDark .offerHeadline {
+  white-space: nowrap; /* в одну строку */
+  overflow: visible;
+}
+
+/* 3) Дом Франка — фото 2/3 ширины, контент 1/3 */
+.offersGrid > .offerCard:nth-child(3) { grid-template-columns: 2fr 1fr; }
+.offersGrid > .offerCard:nth-child(3) { background: #0B0B0B; }
+.offersGrid > .offerCard:nth-child(3) .offerMedia img { object-position: left center; }
+.offersGrid > .offerCard:nth-child(3) .offerContent { background: #0B0B0B; color: #fff; }
+.offersGrid > .offerCard:nth-child(3) .offerPrefix { color: #ffffff; }
+.offersGrid > .offerCard:nth-child(3) .offerSub { color: #fff; }
+.offersGrid > .offerCard:nth-child(3) .offerHeadline { color: #fff; }
+.offersGrid > .offerCard:nth-child(3) .offerBtn { background: #9B722E; }
+
+/* 4) Кутузов Сити — фото справа, прижато к правому краю, без выхода за границы */
+.offersGrid > .offerCard:nth-child(4) .offerMediaRight img {
+  object-position: right center;
+  object-fit: cover; /* фото заполняет весь блок */
+}
+.offersGrid > .offerCard:nth-child(4) .offerHeadline { color: #9B722E; }
+.black { color: #000000; }
+
+
+/* гарантируем, что фото всегда над контентом, если они пересекаются */
+.offerMedia, .offerMediaRight { position: relative; z-index: 2; border: 0 !important; outline: none !important; box-shadow: none !important; }
+.offerContent, .offerContentDark { position: relative; z-index: 1; }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .offersSection { width: 92%; margin: 24px auto 0; }
+  .offersGrid { display: flex; flex-direction: column; gap: 20px; }
+  /* Порядок карточек сверху вниз: ONE TOWER, ЖК Мира, Дом Франка, Кутузов Сити */
+  .offersGrid > .offerCard:nth-child(2) { order: 1; }
+  .offersGrid > .offerCard:nth-child(1) { order: 2; }
+  .offersGrid > .offerCard:nth-child(3) { order: 3; }
+  .offersGrid > .offerCard:nth-child(4) { order: 4; }
+  /* Базовая мобильная раскладка: текст слева, фото справа */
+  .offerCard,
+  .offerCardDark {
+    grid-template-columns: 1fr 40%;
+    align-items: center;
+    min-height: 186px; /* на 40px меньше */
+    aspect-ratio: 340 / 186; /* сохраняем пропорцию с учётом уменьшения */
+    position: relative;
+    overflow: hidden;
+  }
+  .offerMedia, .offerMediaRight { height: 100%; }
+  .offerMedia img, .offerMediaRight img { object-fit: cover; }
+  .offerContent, .offerContentDark { padding: 12px; }
+  .offerContent, .offerContentDark {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* заголовок вверху */
+    align-items: flex-start;     /* по умолчанию слева */
+    text-align: left;
+    gap: 8px;
+  }
+  .offerHeadline {
+    font-family: var(--font-family);
+    font-weight: 800;
+    font-size: 35px;
+    text-transform: uppercase;
+    color: #9B722E !important;
+    line-height: 1.1;
+  }
+  .offerSub { font-size: 14px; margin-top: 6px; }
+  .offerBtn { align-self: stretch; text-align: center; padding: 12px;}
+
+  /* ЖК Мира — текст слева, фото справа */
+  .offersGrid > .offerCard:nth-child(1) {
+    grid-template-columns: 1fr 40%;
+    position: relative;
+    overflow: hidden;
+  }
+  .offersGrid > .offerCard:nth-child(1) .offerMediaRight {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: auto;
+    min-width: 100%;
+    z-index: 1;
+    overflow: visible;
+  }
+  .offersGrid > .offerCard:nth-child(1) .offerMediaRight img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    object-position: right center;
+  }
+.offersGrid > .offerCard:nth-child(1) .offerContent {
+  grid-column: 1;
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  padding-right: 16px;
+}
+
+  /* ONE TOWER — текст слева, фото справа */
+  .offersGrid > .offerCard:nth-child(2) { grid-template-columns: 1fr 40%; }
+  .offersGrid > .offerCard:nth-child(2) .offerMediaRight { grid-column: 2; }
+  .offersGrid > .offerCard:nth-child(2) .offerContentDark { grid-column: 1; }
+
+  /* Дом Франка — фото слева, текст справа */
+  .offersGrid > .offerCard:nth-child(3) {
+    grid-template-columns: 40% 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .offersGrid > .offerCard:nth-child(3) .offerMedia {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    min-width: 100%;
+    z-index: 1; /* фото под текстом */
+  }
+  .offersGrid > .offerCard:nth-child(3) .offerMedia img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+    object-position: left center;
+  }
+  .offersGrid > .offerCard:nth-child(3) .offerContent {
+    grid-column: 2;
+    position: relative;
+    z-index: 2;
+    align-items: flex-end;   /* заголовок справа */
+    text-align: right;
+    background: linear-gradient(90deg, rgba(0,0,0,0) 0%, #0B0B0B 40%);
+    padding-left: 24px;
+  }
+
+  /* Кутузов Сити — как на скрине: текст слева, фото справа снизу заполняет блок */
+  .offersGrid > .offerCard:nth-child(4) {
+    grid-template-columns: 1fr 40%;
+    position: relative;
+    overflow: hidden;
+  }
+  .offersGrid > .offerCard:nth-child(4) .offerMediaRight {
+    grid-column: 2;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: auto;
+    width: auto;
+    min-width: 100%;
+    z-index: 1;
+    overflow: visible;
+    transform: translateX(40px); /* сдвигаем фото вправо */
+  }
+  .offersGrid > .offerCard:nth-child(4) .offerMediaRight img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    object-position: right center;
+  }
+  .offersGrid > .offerCard:nth-child(4) .offerContent {
+    position: relative;
+    z-index: 2; /* кнопка и текст поверх изображения */
+  }
+}
+
+/* ----- Request CTA block ----- */
+.requestSection {
+  width: min(100vw, 1600px);
+  margin: 80px auto 0;
+  aspect-ratio: 1600 / 700;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.requestOverlay {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 32px;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.requestGlass {
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(12px);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.requestBottom {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 120px;
+  background: #000;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.requestInner {
+  position: relative;
+  z-index: 3;
+  width: min(1200px, 90%);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  row-gap: 24px;
+  color: #fff;
+  text-align: center;
+}
+
+.requestTitle {
+  grid-column: 4 / span 6;
+  margin: 0;
+  padding-bottom: 32px; /* расстояние до полей */
+  font-family: var(--font-family);
+  font-weight: 800;
+  font-size: 50px;
+  text-transform: uppercase;
+  color: #fff;
+  white-space: nowrap;
+}
+
+
+.requestForm {
+  grid-column: 4 / span 6;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: min(100%, 680px);
+  margin: 0 auto;
+}
+
+.requestInput {
+  width: 100%;
+  padding: 20px 28px;
+  border-radius: 40px;
+  border: 2px solid transparent;
+  font-size: 18px;
+  font-family: var(--font-family);
+  color: #000;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.requestInput:focus {
+  outline: none;
+  border-color: #9B722E;
+  box-shadow: 0 8px 24px rgba(155, 114, 46, 0.25);
+  transform: translateY(-1px);
+}
+
+.requestInput::placeholder {
+  color: rgba(0,0,0,0.4);
+  transition: color 0.3s ease;
+}
+
+.requestInput:focus::placeholder {
+  color: rgba(0,0,0,0.3);
+}
+
+.requestRow {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
+
+.requestRow .requestInput {
+  flex: 1 1 0;
+}
+
+.requestSubmit {
+  width: 100%;
+}
+
+.requestSubmit {
+  padding: 18px 24px;
+  border-radius: 40px;
+  border: none;
+  background: #9B722E;
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.requestSubmit:disabled,
+.requestSubmitDisabled {
+  background: rgba(155, 114, 46, 0.7);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.inputError {
+  border: 2px solid rgba(255, 0, 0, 0.6) !important;
+}
+
+.requestError {
+  color: #ffcccc;
+  font-size: 14px;
+  text-align: left;
+  width: 100%;
+  margin-top: -16px;
+}
+
+.requestPolicy {
+  grid-column: 4 / span 6;
+  margin: 0;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 18px;
+  text-align: center;
+  color: rgba(201, 201, 201, 0.71);
+  position: relative;
+}
+
+.requestPolicyLink {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.requestConsent {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.requestConsentText {
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+}
+
+.requestTooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 16px);
+  transform: translateX(-50%);
+  width: clamp(280px, 60vw, 420px);
+  background: rgba(255, 241, 228, 0.95);
+  color: #0B0B0B;
+  border-radius: 18px;
+  padding: 24px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+  font-size: 14px;
+  line-height: 1.45;
+  text-transform: none;
+  letter-spacing: normal;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 20;
+}
+
+.requestTooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 12px;
+  border-style: solid;
+  border-color: rgba(255, 241, 228, 0.95) transparent transparent transparent;
+}
+
+.requestTooltip a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0,0,0,0.4);
+}
+
+.requestConsent[data-visible="true"] .requestTooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.requestContacts {
+  grid-column: 4 / span 6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 20px;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.requestIcons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.requestIconBtn:hover {
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.requestIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+}
+
+.whatsappIcon {
+  width: 42.5px;
+  height: 42.5px;
+}
+
+.telegramIcon {
+  width: 62px;
+  height: 62px;
+  filter: invert(1);
+}
+
+.telegramIcon { filter: invert(1); }
+
+@media (max-width: 1060px) {
+  .requestSection {
+    aspect-ratio: unset;
+    min-height: 560px;
+    background-size: cover;
+    position: relative;
+  }
+  .requestBottom { height: 120px; }
+  .requestInner {
+    width: 92%;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  .requestTitle,
+  .requestForm,
+  .requestPolicy,
+  .requestContacts {
+    grid-column: 1 / -1;
+  }
+  .requestForm { width: 100%; gap: 20px; }
+  .requestContacts { gap: 16px; flex-wrap: wrap; }
+  .requestTooltip { width: min(420px, 80vw); }
+}
+
+@media (max-width: 768px) {
+  .requestSection {
+    aspect-ratio: unset;
+    min-height: 520px;
+    width: 100%;
+    margin: 48px auto 0;
+    background-size: cover;
+    position: relative;
+  }
+  .requestInner {
+    grid-template-columns: 1fr;
+    width: 92%;
+  }
+  .requestTitle,
+  .requestForm,
+  .requestPolicy,
+  .requestContacts {
+    grid-column: 1;
+  }
+  .requestTitle {
+    font-size: 34px;
+    padding-top: 50px;
+    padding-bottom: 18px;
+    white-space: normal;
+  }
+  .requestForm {
+    gap: 16px;
+    width: 100%;
+  }
+  .requestRow {
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+  .requestPolicy {
+    font-size: 10px;
+  }
+  .requestContacts {
+    flex-direction: column;
+    gap: 12px;
+    font-size: 16px;
+    padding-bottom: 12px;
+  }
+  .requestBottom { height: 120px; }
+  .requestIcons {
+    gap: 18px;
+    padding-bottom: 30px;
+  }
+  .requestIconBtn { width: auto; height: auto; border: none; background: transparent; }
+  .whatsappIcon { width: 32px; height: 32px; }
+  .telegramIcon { width: 42.5px; height: 42.5px; filter: invert(1); }
+  .requestTooltip {
+    width: calc(100vw - 40px);
+    padding: 18px;
+    bottom: calc(100% + 12px);
+  }
+}
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
 
 .mobileOnly {
   display: none;
@@ -239,4 +1100,599 @@ html, body {
   .serviceButton:nth-child(3) .buttonIcon {
     margin-bottom: 0.5rem;
   }
+}
+
+/* Стили для темного блока с кругом */
+.darkSection {
+  height: 50vh;
+  background-color: #080808;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+  .circleContainer {
+    position: absolute;
+    bottom: 0; /* привязываем к низу */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 31.5625rem;
+    height: 20rem;
+    overflow: hidden;
+    z-index: 5;
+  }
+
+.circle {
+  position: absolute;
+  width: 31.5625rem;
+  height: 31.5625rem;
+  background-color: #34260E;
+  border-radius: 50%;
+  top: 0;
+  left: 0;
+  z-index: 5;
+}
+
+  .womanImage {
+    position: absolute;
+    width: auto;
+    height: 22.5rem;
+    object-fit: contain;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6; /* поверх полукруга, ниже текстового контента */
+  }
+
+.whiteRectangle {
+  position: absolute;
+  width: 90%;
+  height: 20rem;
+  background-color: black;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+.leftTopContent {
+  position: absolute;
+  z-index: 20;
+  color: white;
+}
+
+/* Левый нижний контент */
+.leftBottomContent {
+  position: absolute;
+  bottom: 30px;
+  z-index: 20;
+  color: white;
+}
+
+.leftTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.leftDescription {
+  color: #FFF;
+  font-family: Montserrat;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+}
+
+.detailsBtn {
+  position: absolute;
+  bottom: 30px;
+  right: 0;
+  background: #9B722E;
+  color: #FFF;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 25;
+}
+
+.detailsBtn:hover {
+  background: #e9ab48;
+}
+
+.detailsBtn:active {
+  opacity: 0.8;
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+  .darkSection {
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  .circleContainer {
+    bottom: 0;
+    top: auto;
+  }
+
+  .circle {
+    width: 31.5625rem;
+    height: 31.5625rem;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    bottom: -11.5625rem; /* 31.5625rem - 20rem = 11.5625rem */
+  }
+  
+  .womanImage {
+    height: 22.5rem;
+    width: auto;
+    bottom: 0;
+    top: auto;
+    z-index: 6; /* фото поверх полукруга */
+  }
+  
+  .whiteRectangle {
+    position: relative; /* вместо absolute, чтобы контент шел сверху, а фото снизу */
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 95%;
+    height: auto;
+    margin: 0 auto;
+    padding-bottom: 22.5rem; /* резервируем место под фото снизу */
+  }
+  
+  .leftTopContent {
+    position: relative; /* участвует в нормальном потоке */
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 10px;
+    text-align: center;
+  }
+  
+  .leftBottomContent {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 0px;
+    text-align: center;
+  }
+  
+  .leftTitle {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .leftDescription {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+  
+  .detailsBtn {
+    position: absolute;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    margin: 0;
+    display: block;
+    z-index: 7;
+  }
+}
+
+@media (max-width: 480px) {
+  .circleContainer {
+    width: 100vw;
+    height: 20rem;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    bottom: 0;
+    top: auto;
+  }
+  
+  .circle {
+    width: 31.5625rem;
+    height: 31.5625rem;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    bottom: -11.5625rem;
+  }
+  
+  .womanImage {
+    height: 22.5rem;
+    width: auto;
+    bottom: 0;
+    top: auto;
+    z-index: 6;
+  }
+  
+  .whiteRectangle {
+    width: 98%;
+    height: auto;
+    padding-bottom: 22.5rem;
+  }
+  
+  .detailsBtn {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 7;
+    width: 20rem;
+  }
+  
+  .container {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    width: 92%;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .circleContainer {
+    width: 100vw;
+    height: 20rem;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    bottom: 0;
+    top: auto;
+  }
+  
+  .circle {
+    width: 31.5625rem;
+    height: 31.5625rem;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    bottom: -11.5625rem;
+  }
+  
+  .womanImage {
+    height: 22.5rem;
+    width: auto;
+    bottom: 0;
+    top: auto;
+    z-index: 6;
+  }
+  
+  .whiteRectangle {
+    width: 100%;
+    height: auto;
+    padding-bottom: 22.5rem;
+  }
+  
+  .detailsBtn {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    margin: 0;
+    z-index: 7;
+  }
+  
+  .container {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+    width: 94%;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  
+  .leftTopContent {
+    padding: 15px 15px 8px;
+  }
+  
+  .leftBottomContent {
+    padding: 8px 15px 15px;
+  }
+  
+  .leftTitle {
+    font-size: 1.6rem;
+  }
+  
+  .detailsBtn {
+    position: static;
+    margin: 15px auto 0;
+    display: block;
+  }
+}
+
+
+
+.container {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: white;
+  max-width: 400px;
+  z-index: 15;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  background-color: #ffffff;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  min-width: 0; /* Предотвращает переполнение */
+}
+
+.btn:first-child {
+  flex: 1; /* Занимает меньше места */
+}
+
+.btn:last-child {
+  flex: 2; /* Занимает в 2 раза больше места */
+}
+
+.buttonRow:nth-child(2) .btn {
+  flex: 1 !important; /* Одинаковая ширина для обеих кнопок во втором ряду */
+}
+
+.btnWide {
+  flex: 1;
+  max-width: 100%;
+  min-width: 0;
+  background-color: #ffffff;
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  flex: 1; /* Позволяет кнопкам растягиваться */
+  min-width: 0; /* Предотвращает переполнение */
+}
+
+/* ===== Filter block styles ===== */
+.filterSection {
+  background: #fff;
+  padding: 48px 16px 56px; /* меньше боковые отступы */
+  border-radius: 32px; /* скругления как на макете (ПК) */
+  box-sizing: border-box;
+  overflow: hidden; /* чтобы внутренности повторяли радиусы */
+}
+
+.filterTitleBtn {
+  display: block;
+  margin: 0 auto 28px;
+  background: #0B0B0B;
+  color: #fff;
+  border: 0;
+  padding: 18px 28px;
+  border-radius: 40px;
+  font-weight: 800;
+  font-size: 20px;
+}
+
+.filterGrid {
+  display: grid;
+  /* На ПК: четыре колонки, при уменьшении ширины автоматически переносим блоки.
+     Минимальная ширина карточки ~280px, далее занимает доступное пространство. */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+  gap: 24px 20px;
+}
+
+.filterGroup { min-width: 0; }
+
+.groupLabel {
+  font-weight: 600;
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* убрали min-width, чтобы все 6 кнопок помещались в узкий столбец */
+  background: #efefef;
+  padding: 0;
+  border-radius: 18px; /* как у инпутов */
+  overflow: hidden;
+  width: 100%;
+}
+
+.chip {
+  background: transparent;
+  border: 0;
+  padding: 22px 0; /* высота как у полей ОТ/ДО */
+  font-weight: 700;
+  color: #6f6f6f;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .15s ease, color .15s ease;
+}
+
+/* разделители между S/1/2/3/4/5+ */
+.segmented .chip + .chip {
+  border-left: 1px solid #D9D9D9;
+}
+
+.chip:hover {
+  background: #e9e9e9;
+}
+
+.chipSelected,
+.chip[aria-pressed="true"] {
+  background: #0B0B0B;
+  color: #fff;
+}
+
+.doubleField {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0; /* без зазора, чтобы работал разделитель */
+  width: 100%;
+}
+
+.inputField,
+.inputFieldWide {
+  background: #efefef;
+  border: 0;
+  padding: 22px 24px;
+  border-radius: 18px;
+  color: #6f6f6f;
+  font-weight: 700;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.inputField:hover,
+.inputFieldWide:hover {
+  background: #e9e9e9;
+}
+
+.inputField:focus,
+.inputFieldWide:focus {
+  background: #e9e9e9;
+}
+
+.inputFieldWide {
+  width: 100%;
+}
+
+/* разделитель между полями ОТ/ДО и скругления краёв */
+.doubleField .inputField:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.doubleField .inputField:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 1px solid #D9D9D9;
+}
+
+.filterActions {
+  grid-column: auto; /* позволяем автоматически располагаться и переноситься */
+  justify-self: end;
+}
+
+.searchBtn {
+  background: #9B722E;
+  color: #fff;
+  border: 0;
+  padding: 20px 36px;
+  border-radius: 40px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.searchBtn:hover {
+  background: #e9ab48;
+}
+
+.searchBtn:active {
+  opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  .filterGrid {
+    grid-template-columns: 1fr;
+  }
+  .filterActions { justify-self: stretch; }
+  .searchBtn { width: 100%; }
+}
+
+/* Десктоп: фиксируем 4 колонки и удерживаем кнопку в правой колонке с шириной как у поля поиска */
+@media (min-width: 1025px) {
+  .filterGrid { grid-template-columns: repeat(4, 1fr); padding: 50px;}
+  .filterActions { grid-column: 4; align-self: end; justify-self: end; }
+  .searchBtn { width: 100%; }
+}
+
+/* Mobile layout for the filter block */
+@media (max-width: 768px) {
+  .filterSection {
+    width: 100%; /* на мобильных на всю ширину экрана */
+    margin: 0;   /* без внешних отступов, прижимаем к верхнему блоку */
+    padding: 24px 16px 24px;
+    border-radius: 32px; /* верх ровный, низ скруглён */
+  }
+
+  .filterTitleBtn {
+    font-size: 24px;
+    line-height: 1.2;
+    padding: 14px 18px;
+    margin-top: 3rem; /* отступ сверху внутри белого блока */
+    margin-bottom: 3rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filterGrid { display: block; gap: 0; }
+
+  .filterGroup { min-width: 0; width: 100%; margin-bottom: 22px; }
+
+  .groupLabel {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .segmented {
+    border-radius: 16px;
+  }
+
+  .chip {
+    padding: 16px 0;
+  }
+
+  .doubleField { width: 100%; }
+
+  .inputField,
+  .inputFieldWide {
+    padding: 18px 16px;
+    border-radius: 16px;
+  }
+
+  .doubleField .inputField:first-child { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+  .doubleField .inputField:last-child  { border-top-left-radius: 0;  border-bottom-left-radius: 0; }
+
+  .filterActions { margin-top: 12px; margin-bottom: 8px; width: 100%; } /* небольшой отступ снизу после поля "Поиск" */
+  .searchBtn { width: 100%; padding: 18px 24px; border-radius: 28px; font-size: 18px; margin-bottom: 3rem; margin-top: 3rem;}
 }

@@ -10,13 +10,13 @@ export default function ContactsPage() {
 
         <div className={styles.contactItem}>
           <a href="tel:+79104303366" className={styles.link}>
-            +7 (977) 174‑01‑79
+            +7 (495) 032‑21‑99
           </a>
         </div>
 
         <div className={styles.contactItem}>
           <a href="mailto:info@anwin.ru" className={styles.link}>
-            info@flatcher.com
+            info@flatcher.su
           </a>
         </div>
 
@@ -49,6 +49,6 @@ export default function ContactsPage() {
           </div>
         </dl>
       </div>
-    </div>
+      </div>
   );
 }
