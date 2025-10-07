@@ -550,6 +550,7 @@ app.post('/api/leads', async (req, res) => {
               price: undefined,
               _embedded: {
                 contacts: [amoContact],
+                notes: note,
                 tags: amoTags
               }
             };
@@ -559,17 +560,6 @@ app.post('/api/leads', async (req, res) => {
             if (newLeadId) {
               console.log(`Stored new amoLeadId ${newLeadId} for phone ${payload.phoneDigits}`);
               await Lead.updateMany({ phoneDigits: payload.phoneDigits }, { amoLeadId: String(newLeadId) });
-
-              if (note.length) {
-                await fetch(`https://${AMOCRM_SUBDOMAIN}.amocrm.ru/api/v4/leads/${newLeadId}/notes`, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`
-                  },
-                  body: JSON.stringify(note)
-                });
-              }
             }
           }
         }
