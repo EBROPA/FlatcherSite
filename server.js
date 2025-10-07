@@ -456,7 +456,7 @@ app.post('/api/leads', async (req, res) => {
             });
           }
 
-          const baseSummary = payload.payloadSummary || payload.message || 'Новая заявка';
+          const baseSummary = payload.payloadSummary || payload.message || '';
           const leadClientName = payload.name || 'клиенту';
           const summaryText = `Сделка по ${leadClientName} с сайта`;
           const amoTags = [];
@@ -470,9 +470,9 @@ app.post('/api/leads', async (req, res) => {
           }
 
           const noteBlocks = new Set();
-          if (baseSummary) noteBlocks.add(baseSummary);
-          const secondaryMessage = payload.message && payload.message !== baseSummary ? payload.message : null;
-          if (secondaryMessage) noteBlocks.add(secondaryMessage);
+          if (baseSummary) {
+            noteBlocks.add(`Запрос клиента: ${baseSummary}`);
+          }
 
           const meaningfulFormValues = extractMeaningfulFormValues(payload.formValues) || extractMeaningfulFormValues(payload.filters);
           if (meaningfulFormValues) {
