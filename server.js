@@ -571,6 +571,16 @@ app.post('/api/leads', async (req, res) => {
             };
 
             const amoResponse = await sendAmoLead(amoLeadPayload);
+            if (amoResponse) {
+              try {
+                console.log('AmoCRM lead response:', JSON.stringify(amoResponse));
+              } catch (_) {
+                console.log('AmoCRM lead response received');
+              }
+            } else {
+              console.warn('AmoCRM lead response is empty');
+            }
+
             const newLeadId = amoResponse?._embedded?.leads?.[0]?.id;
             if (newLeadId) {
               console.log(`Stored new amoLeadId ${newLeadId} for phone ${payload.phoneDigits}`);
@@ -579,6 +589,8 @@ app.post('/api/leads', async (req, res) => {
               if (note.length) {
                 await appendNoteToLead({ leadId: newLeadId, notePayload: note, token });
               }
+            } else {
+              console.error('Unable to determine new lead id from AmoCRM response');
             }
           }
         }
