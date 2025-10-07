@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./CallbackModal.module.css";
 import phoneAnswer from "@assets/img/phone-answer.png";
 import PhoneInput from "../PhoneInput/PhoneInput";
+import { readUtmParams, collectClientMeta } from "../../utils/tracking";
 
 const getStorage = (key, fallback = "") => {
   try {
@@ -41,14 +42,20 @@ export default function CallbackModal({ isOpen, onClose, prefill }) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("phone", phone);
-    formData.append("name", userName);
-
     try {
-      const response = await fetch("/api/callback", {
+      const payload = {
+        name: userName,
+        phone,
+        email: "",
+        message: prefill?.summary || "Заказ звонка",
+        utm: readUtmParams(),
+        meta: collectClientMeta()
+      };
+
+      const response = await fetch("/api/leads", {
         method: "POST",
-        body: formData
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
       });
 
       if (!response.ok) throw new Error("Request failed");

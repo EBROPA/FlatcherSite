@@ -13,6 +13,7 @@ import domFrankaImg from "@assets/img/dom-franka-img.png";
 import kutuzovSityImg from "@assets/img/kutuzov-sity-img.png";
 import PhoneInput from "../components/UI/PhoneInput/PhoneInput";
 import Breadcrumbs from "../components/UI/Breadcrumbs/Breadcrumbs";
+import { persistUtmParams, readUtmParams, collectClientMeta } from "../utils/tracking";
 
 
 export default function HomePage() {
@@ -30,7 +31,7 @@ export default function HomePage() {
   const [filterPrefill, setFilterPrefill] = useState(null);
   const [indPrefill, setIndPrefill] = useState(null);
   const [requestPrefill, setRequestPrefill] = useState(null);
-  const [utmData, setUtmData] = useState({ utm_source: "", utm_medium: "", utm_campaign: "", utm_content: "", utm_term: "" });
+  const [utmData, setUtmData] = useState(() => readUtmParams());
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -41,9 +42,17 @@ export default function HomePage() {
       utm_content: params.get("utm_content") || "",
       utm_term: params.get("utm_term") || ""
     };
-    setUtmData(data);
-    if (Object.values(data).some(Boolean)) {
-      console.info("UTM Data:", data);
+    const merged = {
+      utm_source: data.utm_source || utmData.utm_source,
+      utm_medium: data.utm_medium || utmData.utm_medium,
+      utm_campaign: data.utm_campaign || utmData.utm_campaign,
+      utm_content: data.utm_content || utmData.utm_content,
+      utm_term: data.utm_term || utmData.utm_term,
+    };
+    setUtmData(merged);
+    persistUtmParams(merged);
+    if (Object.values(merged).some(Boolean)) {
+      console.info("UTM Data:", merged);
     }
   }, []);
   const [requestName, setRequestName] = useState("");
@@ -118,13 +127,35 @@ export default function HomePage() {
   const isPhoneComplete = (phone) => phone && phone.replace(/\D/g, "").length === 11;
   const isRequestFormValid = requestName.trim().length > 0 && isPhoneComplete(requestPhone);
 
-  const handleRequestSubmit = (event) => {
+  const handleRequestSubmit = async (event) => {
     event.preventDefault();
     const hasName = requestName.trim().length > 0;
     const phoneValid = isPhoneComplete(requestPhone);
     setRequestErrors({ name: !hasName, phone: !phoneValid });
     if (!hasName || !phoneValid) return;
-    // Здесь можно добавить реальную отправку формы
+
+    try {
+      const payload = {
+        name: requestName,
+        phone: requestPhone,
+        email: event.target.requestEmail?.value || "",
+        message: "",
+        utm: utmData,
+        meta: collectClientMeta()
+      };
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      };
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+      // Здесь можно показать статус успеха
+      console.info("Lead stored");
+    } catch (error) {
+      console.error("Failed to submit lead", error);
+    }
   };
 
   const handleNameChange = (event) => {
