@@ -187,6 +187,29 @@ async function ensureAmoToken() {
   }
 }
 
+async function appendNoteToLead({ leadId, notePayload, token }) {
+  if (!leadId || !Array.isArray(notePayload) || !notePayload.length) return;
+  try {
+    const response = await fetch(`https://${AMOCRM_SUBDOMAIN}.amocrm.ru/api/v4/leads/${leadId}/notes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(notePayload)
+    });
+
+    if (!response.ok) {
+      const body = await response.text();
+      console.error(`Failed to append note for lead ${leadId}: ${response.status} ${body}`);
+    } else {
+      console.log(`Note appended to lead ${leadId}`);
+    }
+  } catch (error) {
+    console.error(`Error appending note for lead ${leadId}:`, error.message);
+  }
+}
+
 async function findAmoLeadIdByPhone(token, phone) {
   const phoneDigits = normalizePhone(phone);
   if (!phoneDigits) return null;
@@ -517,14 +540,7 @@ app.post('/api/leads', async (req, res) => {
           if (existingLeadId) {
             console.log(`Appending note to existing amoCRM lead ${existingLeadId} for phone ${payload.phoneDigits}`);
             if (note.length) {
-              await fetch(`https://${AMOCRM_SUBDOMAIN}.amocrm.ru/api/v4/leads/${existingLeadId}/notes`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify(note)
-              });
+              await appendNoteToLead({ leadId: existingLeadId, notePayload: note, token });
             }
 
             if (amoTags.length) {
@@ -550,7 +566,6 @@ app.post('/api/leads', async (req, res) => {
               price: undefined,
               _embedded: {
                 contacts: [amoContact],
-                notes: note,
                 tags: amoTags
               }
             };
@@ -560,6 +575,10 @@ app.post('/api/leads', async (req, res) => {
             if (newLeadId) {
               console.log(`Stored new amoLeadId ${newLeadId} for phone ${payload.phoneDigits}`);
               await Lead.updateMany({ phoneDigits: payload.phoneDigits }, { amoLeadId: String(newLeadId) });
+
+              if (note.length) {
+                await appendNoteToLead({ leadId: newLeadId, notePayload: note, token });
+              }
             }
           }
         }
