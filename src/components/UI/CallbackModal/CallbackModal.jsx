@@ -194,10 +194,6 @@ export default function CallbackModal({ isOpen, onClose, prefill }) {
             </form>
           )}
 
-          {step !== "form" && (
-            <p className={styles.disclaimerTopSecondary}>{renderConsentDisclaimer()}</p>
-          )}
-
           <p className={styles.disclaimerBottom}>{renderConsentDisclaimer()}</p>
 
           {step === "thanks" && (

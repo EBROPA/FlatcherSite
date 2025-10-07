@@ -413,7 +413,6 @@
 }
 
 .secondaryBtn {
-  align-self: flex-start;
   border-radius: 10px;
   padding: 14px 28px;
   border: 1px solid rgba(255, 255, 255, 0.28);
@@ -558,21 +557,6 @@
 
 @media (max-width: 768px) {
   .disclaimerBottom {
-    display: none;
-  }
-}
-
-.disclaimerTopSecondary {
-  width: min(100%, 360px);
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.6;
-  text-align: center;
-  margin: 0 auto 18px;
-}
-
-@media (max-width: 768px) {
-  .disclaimerTopSecondary {
     display: none;
   }
 }

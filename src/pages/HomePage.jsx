@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Suspense } from "react";
 import CallbackModal from "../components/UI/CallbackModal/CallbackModal";
 import styles from "./pageCSS/HomePage.module.css";
 import heroPC from "@assets/img/hero-image.png";
@@ -30,6 +30,22 @@ export default function HomePage() {
   const [filterPrefill, setFilterPrefill] = useState(null);
   const [indPrefill, setIndPrefill] = useState(null);
   const [requestPrefill, setRequestPrefill] = useState(null);
+  const [utmData, setUtmData] = useState({ utm_source: "", utm_medium: "", utm_campaign: "", utm_content: "", utm_term: "" });
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const data = {
+      utm_source: params.get("utm_source") || "",
+      utm_medium: params.get("utm_medium") || "",
+      utm_campaign: params.get("utm_campaign") || "",
+      utm_content: params.get("utm_content") || "",
+      utm_term: params.get("utm_term") || ""
+    };
+    setUtmData(data);
+    if (Object.values(data).some(Boolean)) {
+      console.info("UTM Data:", data);
+    }
+  }, []);
   const [requestName, setRequestName] = useState("");
   const [requestPhone, setRequestPhone] = useState("");
   const [requestErrors, setRequestErrors] = useState({ name: false, phone: false });
@@ -151,7 +167,9 @@ export default function HomePage() {
 
   return (
     <>
-      <Breadcrumbs />
+      <Suspense fallback={null}>
+        <Breadcrumbs />
+      </Suspense>
       <section
         className={styles.hero}
         style={{
@@ -323,26 +341,28 @@ export default function HomePage() {
           </div>
         </div>
         </section>
-      <CallbackModal
-        isOpen={isIndModalOpen}
-        onClose={() => setIsIndModalOpen(false)}
-        prefill={indPrefill}
-      />
-      <CallbackModal
-        isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
-        prefill={filterPrefill}
-      />
-      <CallbackModal
-        isOpen={isOfferModalOpen}
-        onClose={() => setIsOfferModalOpen(false)}
-        prefill={offerPrefill}
-      />
-      <CallbackModal
-        isOpen={isRequestModalOpen}
-        onClose={() => setIsRequestModalOpen(false)}
-        prefill={requestPrefill}
-      />
+      <Suspense fallback={null}>
+        <CallbackModal
+          isOpen={isIndModalOpen}
+          onClose={() => setIsIndModalOpen(false)}
+          prefill={indPrefill}
+        />
+        <CallbackModal
+          isOpen={isFilterModalOpen}
+          onClose={() => setIsFilterModalOpen(false)}
+          prefill={filterPrefill}
+        />
+        <CallbackModal
+          isOpen={isOfferModalOpen}
+          onClose={() => setIsOfferModalOpen(false)}
+          prefill={offerPrefill}
+        />
+        <CallbackModal
+          isOpen={isRequestModalOpen}
+          onClose={() => setIsRequestModalOpen(false)}
+          prefill={requestPrefill}
+        />
+      </Suspense>
       </section>
 
       {/* About block */}
@@ -451,6 +471,11 @@ export default function HomePage() {
         >
           <h2 id="request-title" className={styles.requestTitle}>Оставить заявку</h2>
           <form className={styles.requestForm} onSubmit={handleRequestSubmit} noValidate>
+            <input type="hidden" name="utm_source" value={utmData.utm_source} />
+            <input type="hidden" name="utm_medium" value={utmData.utm_medium} />
+            <input type="hidden" name="utm_campaign" value={utmData.utm_campaign} />
+            <input type="hidden" name="utm_content" value={utmData.utm_content} />
+            <input type="hidden" name="utm_term" value={utmData.utm_term} />
             <input
               className={`${styles.requestInput} ${requestErrors.name ? styles.inputError : ""}`}
               type="text"
