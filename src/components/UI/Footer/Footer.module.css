@@ -24,7 +24,7 @@
 
 .bgImageBase {
   top: 6%;
-  opacity: 0.55;
+  opacity: 0.8;
   filter: brightness(0) invert(1);
 }
 
@@ -75,6 +75,12 @@
   padding: 0;
   display: grid;
   gap: 35px;
+  transition: all 0.3s ease;
+}
+
+.linkCol a:hover {
+  color: #e9ab48;
+  transition: all 0.3s ease;
 }
 
 .linkCol a {
@@ -103,6 +109,11 @@
   transition: color 0.3s ease;
 }
 
+.phone:hover {
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
 .callBtn {
   background: #9B722E;
   color: #fff;
@@ -117,11 +128,21 @@
   transition: background 0.3s ease;
 }
 
+.callBtn:hover {
+  background: #e9ab48;
+  transition: all 0.3s ease;
+}
+
 .socials {
   display: flex;
   gap: 80px;
   align-items: center;
   justify-content: center;
+}
+
+.socials a:hover {
+  scale: 1.1;
+  transition: all 0.3s ease;
 }
 
 .socials img {

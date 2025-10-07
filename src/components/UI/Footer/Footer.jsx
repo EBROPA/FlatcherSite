@@ -88,7 +88,12 @@ export default function Footer() {
       <CallbackModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        prefill={{}}
+        prefill={{
+          source: 'footer_cta',
+          summary: 'Заказ звонка из футера',
+          section: 'footer',
+          id: 'footer-call-to-action'
+        }}
       />
     </footer>
   );

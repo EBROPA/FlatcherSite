@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./CallbackModal.module.css";
 import phoneAnswer from "@assets/img/phone-answer.png";
 import PhoneInput from "../PhoneInput/PhoneInput";
-import { readUtmParams, collectClientMeta } from "../../utils/tracking";
+import { readUtmParams, collectClientMeta, formatPhoneForBackend } from "../../../utils/tracking";
 
 const getStorage = (key, fallback = "") => {
   try {
@@ -24,6 +24,8 @@ export default function CallbackModal({ isOpen, onClose, prefill }) {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [phone, setPhone] = useState(() => getStorage("leadPhone"));
+  const sanitizeName = (value) => value.replace(/[^\p{L}\s'-]+/gu, "");
+
   const [userName, setUserName] = useState(() => getStorage("leadName"));
   const [isConsentTooltipVisible, setIsConsentTooltipVisible] = useState(false);
 
@@ -45,11 +47,17 @@ export default function CallbackModal({ isOpen, onClose, prefill }) {
     try {
       const payload = {
         name: userName,
-        phone,
+        phone: formatPhoneForBackend(phone),
         email: "",
         message: prefill?.summary || "Заказ звонка",
         utm: readUtmParams(),
-        meta: collectClientMeta()
+        meta: collectClientMeta({
+          source: prefill?.source || "callback_modal",
+          numericId: prefill?.id || prefill?.projectId || null,
+          payloadSummary: prefill?.summary || null,
+          extra: prefill?.extra || null,
+          section: prefill?.section || null
+        })
       };
 
       const response = await fetch("/api/leads", {
@@ -190,7 +198,10 @@ export default function CallbackModal({ isOpen, onClose, prefill }) {
                 autoComplete="name"
                 required
                 value={userName}
-                onChange={(event) => setUserName(event.target.value)}
+                onChange={(event) => {
+                  const value = sanitizeName(event.target.value);
+                  setUserName(value);
+                }}
               />
 
               <button type="submit" className={styles.submitBtn}>
@@ -204,17 +215,15 @@ export default function CallbackModal({ isOpen, onClose, prefill }) {
           <p className={styles.disclaimerBottom}>{renderConsentDisclaimer()}</p>
 
           {step === "thanks" && (
-            <div className={styles.resultPane}>
-              <h3 className={styles.resultTitle}>Заявка отправлена</h3>
-              <p className={styles.resultText}>
-                Наш эксперт уже получил ваш запрос и свяжется с вами совсем скоро.
-              </p>
+            <div className={`${styles.resultPane} ${styles.successBanner}`}>
+              <div className={styles.successIcon} aria-hidden="true" />
+              <h3 className={styles.successTitle}>ПРИНЯЛИ ЗАЯВКУ, СКОРО ПЕРЕЗВОНИМ</h3>
               <button
                 type="button"
                 className={styles.secondaryBtn}
                 onClick={() => setStep("form")}
               >
-                отправить ещё один запрос
+                &lt; вернуться к форме
               </button>
             </div>
           )}

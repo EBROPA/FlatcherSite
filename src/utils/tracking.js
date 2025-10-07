@@ -59,9 +59,9 @@ export function readUtmParams() {
   }
 }
 
-export function collectClientMeta() {
+export function collectClientMeta(context = {}) {
   if (typeof window === "undefined") {
-    return {};
+    return { ...normalizeContext(context) };
   }
 
   const ua = navigator.userAgent || "";
@@ -86,8 +86,70 @@ export function collectClientMeta() {
     deviceType,
     browser,
     visitStartedAt: ensureVisitTimestamp(),
-    page: window.location.href
+    page: window.location.href,
+    ...normalizeContext(context)
   };
+}
+
+export function formatPhoneForBackend(value = '') {
+  const digits = value.replace(/\D+/g, '');
+  if (digits.length === 11 && digits.startsWith('7')) {
+    return `+7 ${digits.slice(1, 4)} ${digits.slice(4, 7)}-${digits.slice(7, 9)}-${digits.slice(9, 11)}`;
+  }
+  if (digits.length === 10) {
+    return `+7 ${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(6, 8)}-${digits.slice(8, 10)}`;
+  }
+  return value;
+}
+
+function normalizeContext(raw = {}) {
+  const result = { ...raw };
+
+  if (result.formValues && typeof result.formValues === "object") {
+    result.formValues = sanitizeFormValues(result.formValues);
+  }
+
+  if (result.extra && typeof result.extra === "object") {
+    result.extra = sanitizeFormValues(result.extra);
+  }
+
+  if (result.numericId != null && typeof result.numericId !== "string") {
+    result.numericId = String(result.numericId);
+  }
+
+  return result;
+}
+
+function sanitizeFormValues(values = {}) {
+  const parsed = {};
+  Object.entries(values).forEach(([key, value]) => {
+    if (value == null || value === "") {
+      parsed[key] = null;
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      parsed[key] = value.map((item) => sanitizePrimitive(item)).filter((item) => item !== null);
+      return;
+    }
+
+    if (typeof value === "object") {
+      parsed[key] = sanitizeFormValues(value);
+      return;
+    }
+
+    parsed[key] = sanitizePrimitive(value);
+  });
+
+  return parsed;
+}
+
+function sanitizePrimitive(value) {
+  if (value == null || value === "") return null;
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value === "boolean") return value;
+  const numeric = Number(value.toString().replace(/\s+/g, ""));
+  return Number.isFinite(numeric) ? numeric : value.toString();
 }
 
 function detectBrowser(ua) {

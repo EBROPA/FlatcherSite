@@ -13,6 +13,7 @@ import DataProcessingPolicy from "./pages/DataProcessingPolicy";
 import PersonalDataConsentPage from "./pages/PersonalDataConsentPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Footer from './components/UI/Footer/Footer';
+import CookieConsent from './components/UI/CookieConsent/CookieConsent';
 import './styles.css'
 
 export default function App() {
@@ -70,6 +71,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <CookieConsent />
     </>
   );
 }

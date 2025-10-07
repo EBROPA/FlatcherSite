@@ -40,6 +40,8 @@ pids
 *.pid
 *.seed
 *.pid.lock
+amo-tokens.json
+process.env
 
 # Coverage directory used by tools like istanbul
 coverage/

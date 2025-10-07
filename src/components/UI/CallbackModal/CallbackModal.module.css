@@ -391,25 +391,52 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-items: center;
 }
 
-.resultPane,
-.form {
+.successIcon {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(120, 255, 178, 0.9), rgba(51, 102, 68, 0.6));
+  position: relative;
+  box-shadow: 0 10px 40px rgba(51, 102, 68, 0.45);
+}
+
+.successIcon::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 48px;
+  border-right: 6px solid #bcff96;
+  border-bottom: 6px solid #bcff96;
+  transform: translate(-50%, -60%) rotate(45deg);
+  border-radius: 2px;
+}
+
+ .successBanner {
   width: 100%;
+  max-width: 360px;
+  border-radius: 16px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+  color: #d6ffd5;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4);
 }
 
-.resultTitle {
+.successTitle {
   margin: 0;
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.resultText {
-  margin: 0;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.72);
-  line-height: 1.6;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c9ff9b;
 }
 
 .secondaryBtn {
@@ -422,11 +449,12 @@
   letter-spacing: 0.12em;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .secondaryBtn:hover {
   background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .disclaimer {

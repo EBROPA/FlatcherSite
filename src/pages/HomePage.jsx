@@ -13,7 +13,7 @@ import domFrankaImg from "@assets/img/dom-franka-img.png";
 import kutuzovSityImg from "@assets/img/kutuzov-sity-img.png";
 import PhoneInput from "../components/UI/PhoneInput/PhoneInput";
 import Breadcrumbs from "../components/UI/Breadcrumbs/Breadcrumbs";
-import { persistUtmParams, readUtmParams, collectClientMeta } from "../utils/tracking";
+import { persistUtmParams, readUtmParams, collectClientMeta, formatPhoneForBackend } from "../utils/tracking";
 
 
 export default function HomePage() {
@@ -32,6 +32,7 @@ export default function HomePage() {
   const [indPrefill, setIndPrefill] = useState(null);
   const [requestPrefill, setRequestPrefill] = useState(null);
   const [utmData, setUtmData] = useState(() => readUtmParams());
+  const [requestStatus, setRequestStatus] = useState("idle");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -67,6 +68,21 @@ export default function HomePage() {
     return digits.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   };
 
+const formatReadableNumber = (value) => {
+  if (value === null || value === undefined || value === "") return "";
+  const numeric = Number(String(value).replace(/\s+/g, ""));
+  if (!Number.isFinite(numeric)) return String(value);
+  return new Intl.NumberFormat("ru-RU").format(numeric);
+};
+
+  const toNumber = (value) => {
+    if (value === null || value === undefined) return null;
+    const normalized = value.toString().replace(/\s+/g, "");
+    if (!normalized) return null;
+    const parsed = Number(normalized);
+    return Number.isNaN(parsed) ? null : parsed;
+  };
+
   const handlePriceFrom = (e) => {
     setPriceFrom(formatThousands(e.target.value));
   };
@@ -78,17 +94,53 @@ export default function HomePage() {
   const handleAreaFrom = (e) => setAreaFrom(e.target.value.replace(/\D+/g, ""));
   const handleAreaTo = (e) => setAreaTo(e.target.value.replace(/\D+/g, ""));
 
-  const buildQuerySummary = () => {
-    const rooms = selectedRooms.length ? selectedRooms.join(", ") : "не выбрано";
-    const area = [areaFrom && `от ${areaFrom} м²`, areaTo && `до ${areaTo} м²`]
-      .filter(Boolean)
-      .join(" ");
-    const price = [priceFrom && `от ${priceFrom} ₽`, priceTo && `до ${priceTo} ₽`]
-      .filter(Boolean)
-      .join(" ");
-    const search = queryText || "не указано";
-    return `Комнат: ${rooms}; Площадь: ${area || "не указано"}; Цена: ${price || "не указано"}; Поиск: ${search}`;
-  };
+const buildQuerySummary = (overrides = {}) => {
+  const roomsValue = overrides.rooms ?? selectedRooms;
+  const areaFromValue = overrides.areaFrom ?? areaFrom;
+  const areaToValue = overrides.areaTo ?? areaTo;
+  const priceFromValue = overrides.priceFrom ?? priceFrom;
+  const priceToValue = overrides.priceTo ?? priceTo;
+  const searchValue = overrides.search ?? queryText;
+
+  const roomsText = Array.isArray(roomsValue) && roomsValue.length
+    ? roomsValue.join(", ")
+    : "";
+  const area = [
+    areaFromValue ? `от ${formatReadableNumber(areaFromValue)} м²` : "",
+    areaToValue ? `до ${formatReadableNumber(areaToValue)} м²` : ""
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const price = [
+    priceFromValue ? `от ${formatReadableNumber(priceFromValue)} ₽` : "",
+    priceToValue ? `до ${formatReadableNumber(priceToValue)} ₽` : ""
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const hasOfferObject = searchValue && searchValue.trim();
+
+  const parts = [];
+  if (hasOfferObject) {
+    parts.push(`Объект: ${searchValue.trim()}`);
+  } else if (roomsText) {
+    parts.push(`Комнат: ${roomsText}`);
+  }
+  if (area) parts.push(`Площадь: ${area}`);
+  if (price) parts.push(`Цена: ${price}`);
+  if (!hasOfferObject && searchValue) parts.push(`Поиск: ${searchValue}`);
+
+  return parts.length ? parts.join("; ") : "Заказать обратный звонок";
+};
+
+  const buildFilterPayloadDetails = () => ({
+    rooms: selectedRooms,
+    areaFrom: toNumber(areaFrom),
+    areaTo: toNumber(areaTo),
+    priceFrom: toNumber(priceFrom),
+    priceTo: toNumber(priceTo),
+    search: queryText || ""
+  });
 
   const roomOptions = ["C", "1", "2", "3", "4", "5+"]; // можно выбрать несколько
 
@@ -98,34 +150,54 @@ export default function HomePage() {
     );
   };
 
-  const openOfferModal = (projectName) => {
+  const openOfferModal = (projectName, projectId, priceFromValue, areaFromValue) => {
     setOfferPrefill({
       showSummary: true,
-      summary: `Оставьте контакт, и мы подробно расскажем про объект ${projectName}`
+      summary: buildQuerySummary({
+        rooms: [projectName],
+        priceFrom: priceFromValue,
+        areaFrom: areaFromValue,
+        areaTo: null,
+        priceTo: null,
+        search: projectName,
+      }),
+      source: `offers:${projectId || projectName}`,
+      projectName,
+      projectId: projectId || projectName,
+      extra: {
+        priceFrom: priceFromValue ? Number(priceFromValue) : null,
+        areaFrom: areaFromValue ? Number(areaFromValue) : null,
+      },
     });
     setIsOfferModalOpen(true);
   };
 
   const openFilterModal = () => {
+    const filters = buildFilterPayloadDetails();
     setFilterPrefill({
       showSummary: true,
-      summary: buildQuerySummary()
+      summary: buildQuerySummary(filters),
+      source: "filter_modal",
+      extra: {
+        filters,
+      },
     });
     setIsFilterModalOpen(true);
   };
 
   const openIndModal = () => {
-    setIndPrefill({});
+    setIndPrefill({ source: "individual_support", section: "individual_support" });
     setIsIndModalOpen(true);
   };
 
   const openRequestModal = () => {
-    setRequestPrefill({});
+    setRequestPrefill({ source: "cta_request", section: "cta_banner" });
     setIsRequestModalOpen(true);
   };
 
   const isPhoneComplete = (phone) => phone && phone.replace(/\D/g, "").length === 11;
-  const isRequestFormValid = requestName.trim().length > 0 && isPhoneComplete(requestPhone);
+  const isRequestFormValid =
+    requestName.trim().length > 0 && isPhoneComplete(requestPhone) && requestStatus !== "loading";
 
   const handleRequestSubmit = async (event) => {
     event.preventDefault();
@@ -133,33 +205,45 @@ export default function HomePage() {
     const phoneValid = isPhoneComplete(requestPhone);
     setRequestErrors({ name: !hasName, phone: !phoneValid });
     if (!hasName || !phoneValid) return;
+    setRequestStatus("loading");
 
     try {
+      const filters = buildFilterPayloadDetails();
       const payload = {
         name: requestName,
-        phone: requestPhone,
+        phone: formatPhoneForBackend(requestPhone),
         email: event.target.requestEmail?.value || "",
-        message: "",
+        message: buildQuerySummary(filters),
         utm: utmData,
-        meta: collectClientMeta()
+        meta: collectClientMeta({
+          source: "request_form",
+          section: "request_block",
+          formValues: filters,
+        })
       };
       const response = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      };
+      });
       if (!response.ok) {
         throw new Error("Request failed");
       }
-      // Здесь можно показать статус успеха
-      console.info("Lead stored");
+      setRequestStatus("success");
+      setRequestName("");
+      setRequestPhone("");
+      setRequestErrors({ name: false, phone: false });
     } catch (error) {
       console.error("Failed to submit lead", error);
+      setRequestStatus("error");
     }
   };
 
+  const sanitizeName = (value) => value.replace(/[^\p{L}\s'-]+/gu, "");
+
   const handleNameChange = (event) => {
-    const value = event.target.value;
+    const rawValue = event.target.value;
+    const value = sanitizeName(rawValue);
     setRequestName(value);
     if (requestErrors.name && value.trim().length > 0) {
       setRequestErrors((prev) => ({ ...prev, name: false }));
@@ -443,7 +527,7 @@ export default function HomePage() {
             <div className={styles.offerContent}>
               <div className={styles.offerHeadline}><span className={styles.offerPrefix}>ЖК</span>&nbsp;<span className={styles.gold}>МИРА</span></div>
               <div className={styles.offerSub}>КВАРТИРЫ ОТ 18 080 000 ₽ ОТ 18 М²</div>
-              <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Mira')}>ПОДРОБНЕЕ</button>
+              <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Mira', 'mira', '18080000', '18')}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
               <img src={miraImg} alt="ЖК Мира" loading="lazy" decoding="async" />
@@ -455,7 +539,7 @@ export default function HomePage() {
             <div className={styles.offerContentDark}>
               <div className={styles.offerHeadline}>ONE TOWER</div>
               <div className={styles.offerSub}>КВАРТИРЫ ОТ<br/>48 860 000 ₽</div>
-              <button type="button" className={`${styles.offerBtn} ${styles.offerBtnDark}`} onClick={() => openOfferModal('One tower')}>ПОДРОБНЕЕ</button>
+              <button type="button" className={`${styles.offerBtn} ${styles.offerBtnDark}`} onClick={() => openOfferModal('One tower', 'one-tower', '48860000', null)}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
               <img src={oneImg} alt="ONE TOWER" loading="lazy" decoding="async" />
@@ -470,7 +554,7 @@ export default function HomePage() {
             <div className={styles.offerContent}>
               <div className={styles.offerHeadline}><span className={styles.offerPrefix}>ЖК</span>&nbsp;<span className={styles.gold}>ДОМ</span><br/><span className={styles.gold}>ФРАНКА</span></div>
               <div className={styles.offerSub}>КВАРТИРЫ ОТ<br/>106 820 000 ₽</div>
-              <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Дом Франка')}>ПОДРОБНЕЕ</button>
+              <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Дом Франка', 'dom-franka', '106820000', null)}>ПОДРОБНЕЕ</button>
             </div>
           </article>
 
@@ -479,7 +563,7 @@ export default function HomePage() {
             <div className={styles.offerContent}>
               <div className={styles.offerHeadline}><span className={styles.gold}>КУТУЗОВ</span><br/>СИТИ <span className={styles.black}>ЖК</span></div>
               <div className={styles.offerSub}>КВАРТИРЫ ОТ 18 МЛН<br/>ОТ 30 М²</div>
-              <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Кутузов Сити')}>ПОДРОБНЕЕ</button>
+              <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Кутузов Сити', 'kutuzov-city', '18000000', '30')}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
               <img src={kutuzovSityImg} alt="Кутузов Сити ЖК" loading="lazy" decoding="async" />
@@ -500,65 +584,94 @@ export default function HomePage() {
           role="form"
           aria-labelledby="request-title"
         >
-          <h2 id="request-title" className={styles.requestTitle}>Оставить заявку</h2>
-          <form className={styles.requestForm} onSubmit={handleRequestSubmit} noValidate>
-            <input type="hidden" name="utm_source" value={utmData.utm_source} />
-            <input type="hidden" name="utm_medium" value={utmData.utm_medium} />
-            <input type="hidden" name="utm_campaign" value={utmData.utm_campaign} />
-            <input type="hidden" name="utm_content" value={utmData.utm_content} />
-            <input type="hidden" name="utm_term" value={utmData.utm_term} />
-            <input
-              className={`${styles.requestInput} ${requestErrors.name ? styles.inputError : ""}`}
-              type="text"
-              name="requestName"
-              id="request-name"
-              placeholder="Ваше имя"
-              aria-label="Ваше имя"
-              value={requestName}
-              onChange={handleNameChange}
-            />
-            {requestErrors.name && (
-              <span className={styles.requestError} role="alert">Укажите имя</span>
-            )}
-            <div className={styles.requestRow}>
-              <PhoneInput
-                className={`${styles.requestInput} ${requestErrors.phone ? styles.inputError : ""}`}
-                name="requestPhone"
-                id="request-phone"
-                aria-label="Телефон"
-                value={requestPhone}
-                onAccept={(value) => {
-                  setRequestPhone(value);
-                }}
-                onComplete={(value) => {
-                  setRequestPhone(value);
-                  if (isPhoneComplete(value)) {
-                    setRequestErrors((prev) => ({ ...prev, phone: false }));
-                  }
-                }}
-                onBlur={() => {
-                  if (isPhoneComplete(requestPhone)) {
-                    setRequestErrors((prev) => ({ ...prev, phone: false }));
-                  } else {
-                    setRequestErrors((prev) => ({ ...prev, phone: true }));
-                  }
-                }}
-                inputMode="tel"
-                autoComplete="tel"
-              />
-              <input className={styles.requestInput} type="email" name="requestEmail" id="request-email" placeholder="E-mail" aria-label="E-mail" />
+          {requestStatus !== "success" && (
+            <>
+              <h2 id="request-title" className={styles.requestTitle}>Оставить заявку</h2>
+              <form className={styles.requestForm} onSubmit={handleRequestSubmit} noValidate>
+                <input type="hidden" name="utm_source" value={utmData.utm_source} />
+                <input type="hidden" name="utm_medium" value={utmData.utm_medium} />
+                <input type="hidden" name="utm_campaign" value={utmData.utm_campaign} />
+                <input type="hidden" name="utm_content" value={utmData.utm_content} />
+                <input type="hidden" name="utm_term" value={utmData.utm_term} />
+                <input
+                  className={`${styles.requestInput} ${requestErrors.name ? styles.inputError : ""}`}
+                  type="text"
+                  name="requestName"
+                  id="request-name"
+                  placeholder="Ваше имя"
+                  aria-label="Ваше имя"
+                  value={requestName}
+                  onChange={handleNameChange}
+                />
+                {requestErrors.name && (
+                  <span className={styles.requestError} role="alert">Укажите имя</span>
+                )}
+                <div className={styles.requestRow}>
+                  <PhoneInput
+                    className={`${styles.requestInput} ${requestErrors.phone ? styles.inputError : ""}`}
+                    name="requestPhone"
+                    id="request-phone"
+                    aria-label="Телефон"
+                    value={requestPhone}
+                    onAccept={(value) => {
+                      setRequestPhone(value);
+                    }}
+                    onComplete={(value) => {
+                      setRequestPhone(value);
+                      if (isPhoneComplete(value)) {
+                        setRequestErrors((prev) => ({ ...prev, phone: false }));
+                      }
+                    }}
+                    onBlur={() => {
+                      if (isPhoneComplete(requestPhone)) {
+                        setRequestErrors((prev) => ({ ...prev, phone: false }));
+                      } else {
+                        setRequestErrors((prev) => ({ ...prev, phone: true }));
+                      }
+                    }}
+                    inputMode="tel"
+                    autoComplete="tel"
+                  />
+                  <input className={styles.requestInput} type="email" name="requestEmail" id="request-email" placeholder="E-mail" aria-label="E-mail" />
+                </div>
+                {requestErrors.phone && (
+                  <span className={styles.requestError} role="alert">Укажите телефон полностью</span>
+                )}
+                <button
+                  type="submit"
+                  className={`${styles.requestSubmit} ${(requestStatus !== "idle" && requestStatus !== "success") || !isRequestFormValid ? styles.requestSubmitDisabled : ""}`}
+                  disabled={!isRequestFormValid || requestStatus === "loading"}
+                >
+                  {requestStatus === "loading" ? "Отправляем..." : "Отправить заявку"}
+                </button>
+              </form>
+            </>
+          )}
+          {requestStatus === "success" && (
+            <div className={styles.requestStatusSuccess} role="status">
+              <div className={styles.requestStatusIcon} aria-hidden="true" />
+              <p className={styles.requestStatusTitle}>Приняли заявку, скоро перезвоним</p>
+              <button
+                type="button"
+                className={styles.requestStatusLink}
+                onClick={() => setRequestStatus("idle")}
+              >
+                &lt; вернуться к форме
+              </button>
             </div>
-            {requestErrors.phone && (
-              <span className={styles.requestError} role="alert">Укажите телефон полностью</span>
-            )}
-            <button
-              type="submit"
-              className={`${styles.requestSubmit} ${!isRequestFormValid ? styles.requestSubmitDisabled : ""}`}
-              disabled={!isRequestFormValid}
-            >
-              Отправить заявку
-            </button>
-          </form>
+          )}
+          {requestStatus === "error" && (
+            <div className={styles.requestStatusError} role="alert">
+              <p>Что-то пошло не так. Попробуйте отправить заявку позднее или напишите нам в мессенджеры ниже.</p>
+              <button
+                type="button"
+                className={styles.requestStatusLink}
+                onClick={() => setRequestStatus("idle")}
+              >
+                &lt; вернуться к форме
+              </button>
+            </div>
+          )}
           <p className={styles.requestPolicy}>
             Отправляя заявку, вы даёте своё{" "}
             <span
