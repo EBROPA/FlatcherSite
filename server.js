@@ -54,6 +54,21 @@ function persistAmoTokens(tokens) {
   }
 }
 
+// Some AmoCRM endpoints may return 204 No Content or an empty body even on success.
+// Parsing such responses as JSON throws "Unexpected end of JSON input".
+// This helper safely returns null when there is no JSON payload.
+async function parseJsonSafely(response) {
+  if (!response) return null;
+  if (response.status === 204) return null;
+  try {
+    const text = await response.text();
+    if (!text) return null;
+    return JSON.parse(text);
+  } catch (_) {
+    return null;
+  }
+}
+
 const storedAmoTokens = loadAmoTokens();
 
 const {
@@ -190,7 +205,10 @@ async function findAmoLeadIdByPhone(token, phone) {
       return null;
     }
 
-    const data = await response.json();
+    const data = await parseJsonSafely(response);
+    if (!data) {
+      return null;
+    }
     const contacts = data?._embedded?.contacts || [];
     for (const contact of contacts) {
       const phones = (contact.custom_fields_values || []).find((field) => field.field_code === 'PHONE');
@@ -243,7 +261,10 @@ async function resolveExistingAmoLeadId({ token, phoneDigits }) {
       return null;
     }
 
-    const data = await response.json();
+    const data = await parseJsonSafely(response);
+    if (!data) {
+      return null;
+    }
     const leads = data?._embedded?.leads || [];
     if (leads.length) {
       const leadId = String(leads[0].id || leads[0]);
