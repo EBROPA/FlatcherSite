@@ -288,12 +288,16 @@ const buildQuerySummary = (overrides = {}) => {
       </Suspense>
       <section
         className={styles.hero}
-        style={{
-          backgroundImage: `url(${heroPC})`
-        }}
         role="img"
         aria-label="Фоновое изображение"
       >
+        <img 
+          src={heroPC} 
+          alt="Фоновое изображение" 
+          className={styles.heroBackground}
+          loading="eager"
+          fetchPriority="high"
+        />
         <div className={styles.heroBanner} aria-hidden="true">
           <div className={styles.bannerInner}>
             <h1 className={styles.heroTitle}>
