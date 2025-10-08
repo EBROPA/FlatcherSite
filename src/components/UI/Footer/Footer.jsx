@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './Footer.module.css';
 
 import flatcherFooter from '../../../../assets/svg/flatcher-foter.svg';
-import flatcherFooterMobile from '../../../../assets/img/flathcer-mobile-foter.png';
+import flatcherFooterMobile from '../../../../assets/img/optimized/flathcer-mobile-foter.webp';
 import whatsappIcon from '../../../../assets/svg/whatsapp-icon.svg';
 import telegramIcon from '../../../../assets/svg/telegram-icons.svg';
 import CallbackModal from '../CallbackModal/CallbackModal';

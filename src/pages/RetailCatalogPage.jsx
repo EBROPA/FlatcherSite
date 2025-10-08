@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import Wrapper from "../components/UI/Wrapper/Wrapper";
 import Pagination from "../components/UI/Pagination/Pagination";
 import classes from "../components/UI/Wrapper/Wrapper.module.css";
-import image from "../../assets/img/hordinka2.jpg"
+import image from "../../assets/img/optimized/hordinka2.webp"
 
 function RetailCatalogPage() {
   const [searchParams] = useSearchParams();

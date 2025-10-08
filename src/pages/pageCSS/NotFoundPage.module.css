@@ -1,7 +1,7 @@
 .wrapper {
   position: relative;
   min-height: 100vh;
-  background: url("../../assets/img/moskva-bid.jpg") center/cover no-repeat fixed;
+  background: url("../../assets/img/optimized/moskva-bid.webp") center/cover no-repeat fixed;
   display: flex;
   align-items: center;
   justify-content: center;

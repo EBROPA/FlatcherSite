@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./CallbackModal.module.css";
-import phoneAnswer from "@assets/img/phone-answer.png";
+import phoneAnswer from "@assets/img/optimized/phone-answer.webp";
 import PhoneInput from "../PhoneInput/PhoneInput";
 import { readUtmParams, collectClientMeta, formatPhoneForBackend } from "../../../utils/tracking";
 

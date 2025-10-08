@@ -9,7 +9,22 @@ export default function OptimizedImage({
   sizes,
   ...props
 }) {
-  // Extract filename and extension
+  // If src is already WebP, use it directly
+  if (src.includes('.webp')) {
+    return (
+      <img
+        src={src}
+        alt={alt}
+        className={className}
+        loading={loading}
+        decoding={decoding}
+        sizes={sizes}
+        {...props}
+      />
+    );
+  }
+
+  // Extract filename and extension for fallback
   const pathParts = src.split('/');
   const filename = pathParts[pathParts.length - 1];
   const nameWithoutExt = filename.replace(/\.(png|jpg|jpeg)$/i, '');

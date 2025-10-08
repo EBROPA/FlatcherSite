@@ -2,16 +2,16 @@ import React, { useEffect, useState, useRef, Suspense } from "react";
 import CallbackModal from "../components/UI/CallbackModal/CallbackModal";
 import OptimizedImage from "../components/UI/OptimizedImage";
 import styles from "./pageCSS/HomePage.module.css";
-import heroPC from "@assets/img/hero-image.png";
-import womanImg from "@assets/img/woman-img.png";
-import aboutBack from "@assets/img/about-back.png";
-import backgroundImg from "@assets/img/background-img.png";
+import heroPC from "@assets/img/optimized/hero-image.webp";
+import womanImg from "@assets/img/optimized/woman-img.webp";
+import aboutBack from "@assets/img/optimized/about-back.webp";
+import backgroundImg from "@assets/img/optimized/background-img.webp";
 import telegramIcon from "@assets/svg/telegram-icons.svg";
 import whatsappIcon from "@assets/svg/whatsapp-icon.svg";
-import oneImg from "@assets/img/one-img.png";
-import miraImg from "@assets/img/mira-img.png";
-import domFrankaImg from "@assets/img/dom-franka-img.png";
-import kutuzovSityImg from "@assets/img/kutuzov-sity-img.png";
+import oneImg from "@assets/img/optimized/one-img.webp";
+import miraImg from "@assets/img/optimized/mira-img.webp";
+import domFrankaImg from "@assets/img/optimized/dom-franka-img.webp";
+import kutuzovSityImg from "@assets/img/optimized/kutuzov-sity-img.webp";
 import PhoneInput from "../components/UI/PhoneInput/PhoneInput";
 import Breadcrumbs from "../components/UI/Breadcrumbs/Breadcrumbs";
 import { persistUtmParams, readUtmParams, collectClientMeta, formatPhoneForBackend } from "../utils/tracking";
@@ -325,7 +325,7 @@ const buildQuerySummary = (overrides = {}) => {
             <div className={styles.circleContainer}>
               <div className={styles.circle}></div>
             </div>
-            <OptimizedImage src={womanImg} alt="woman" className={styles.womanImage} loading="lazy" decoding="async" />
+            <img src={womanImg} alt="woman" className={styles.womanImage} loading="lazy" decoding="async" />
 
             <div className={styles.leftTopContent}>
               <h2 className={styles.leftTitle}>Индивидуальное<br />сопровождение</h2>
@@ -531,7 +531,7 @@ const buildQuerySummary = (overrides = {}) => {
               <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Mira', 'mira', '18080000', '18')}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
-              <OptimizedImage src={miraImg} alt="ЖК Мира" loading="lazy" decoding="async" />
+              <img src={miraImg} alt="ЖК Мира" loading="lazy" decoding="async" />
             </div>
           </article>
 
@@ -543,14 +543,14 @@ const buildQuerySummary = (overrides = {}) => {
               <button type="button" className={`${styles.offerBtn} ${styles.offerBtnDark}`} onClick={() => openOfferModal('One tower', 'one-tower', '48860000', null)}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
-              <OptimizedImage src={oneImg} alt="ONE TOWER" loading="lazy" decoding="async" />
+              <img src={oneImg} alt="ONE TOWER" loading="lazy" decoding="async" />
             </div>
           </article>
 
           {/* 3. ЖК Дом Франка */}
           <article className={styles.offerCard}>
             <div className={styles.offerMedia}>
-              <OptimizedImage src={domFrankaImg} alt="ЖК Дом Франка" loading="lazy" decoding="async" />
+              <img src={domFrankaImg} alt="ЖК Дом Франка" loading="lazy" decoding="async" />
             </div>
             <div className={styles.offerContent}>
               <div className={styles.offerHeadline}><span className={styles.offerPrefix}>ЖК</span>&nbsp;<span className={styles.gold}>ДОМ</span><br/><span className={styles.gold}>ФРАНКА</span></div>
@@ -567,7 +567,7 @@ const buildQuerySummary = (overrides = {}) => {
               <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Кутузов Сити', 'kutuzov-city', '18000000', '30')}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
-              <OptimizedImage src={kutuzovSityImg} alt="Кутузов Сити ЖК" loading="lazy" decoding="async" />
+              <img src={kutuzovSityImg} alt="Кутузов Сити ЖК" loading="lazy" decoding="async" />
             </div>
           </article>
         </div>

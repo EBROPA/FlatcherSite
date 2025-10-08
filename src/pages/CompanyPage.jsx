@@ -1,6 +1,6 @@
 import React from 'react';
 import style from "./pageCSS/CompanyPage.module.css";
-import logo from "@assets/img/flatcher-icon.jpg";
+import logo from "@assets/img/optimized/flatcher-icon.webp";
 
 function CompanyPage() {
   return (
