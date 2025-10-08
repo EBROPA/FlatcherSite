@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, Suspense } from "react";
 import CallbackModal from "../components/UI/CallbackModal/CallbackModal";
+import OptimizedImage from "../components/UI/OptimizedImage";
 import styles from "./pageCSS/HomePage.module.css";
 import heroPC from "@assets/img/hero-image.png";
 import womanImg from "@assets/img/woman-img.png";
@@ -324,7 +325,7 @@ const buildQuerySummary = (overrides = {}) => {
             <div className={styles.circleContainer}>
               <div className={styles.circle}></div>
             </div>
-            <img src={womanImg} alt="woman" className={styles.womanImage} loading="lazy" decoding="async" />
+            <OptimizedImage src={womanImg} alt="woman" className={styles.womanImage} loading="lazy" decoding="async" />
 
             <div className={styles.leftTopContent}>
               <h2 className={styles.leftTitle}>Индивидуальное<br />сопровождение</h2>
@@ -530,7 +531,7 @@ const buildQuerySummary = (overrides = {}) => {
               <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Mira', 'mira', '18080000', '18')}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
-              <img src={miraImg} alt="ЖК Мира" loading="lazy" decoding="async" />
+              <OptimizedImage src={miraImg} alt="ЖК Мира" loading="lazy" decoding="async" />
             </div>
           </article>
 
@@ -542,14 +543,14 @@ const buildQuerySummary = (overrides = {}) => {
               <button type="button" className={`${styles.offerBtn} ${styles.offerBtnDark}`} onClick={() => openOfferModal('One tower', 'one-tower', '48860000', null)}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
-              <img src={oneImg} alt="ONE TOWER" loading="lazy" decoding="async" />
+              <OptimizedImage src={oneImg} alt="ONE TOWER" loading="lazy" decoding="async" />
             </div>
           </article>
 
           {/* 3. ЖК Дом Франка */}
           <article className={styles.offerCard}>
             <div className={styles.offerMedia}>
-              <img src={domFrankaImg} alt="ЖК Дом Франка" loading="lazy" decoding="async" />
+              <OptimizedImage src={domFrankaImg} alt="ЖК Дом Франка" loading="lazy" decoding="async" />
             </div>
             <div className={styles.offerContent}>
               <div className={styles.offerHeadline}><span className={styles.offerPrefix}>ЖК</span>&nbsp;<span className={styles.gold}>ДОМ</span><br/><span className={styles.gold}>ФРАНКА</span></div>
@@ -566,7 +567,7 @@ const buildQuerySummary = (overrides = {}) => {
               <button type="button" className={styles.offerBtn} onClick={() => openOfferModal('ЖК Кутузов Сити', 'kutuzov-city', '18000000', '30')}>ПОДРОБНЕЕ</button>
             </div>
             <div className={styles.offerMediaRight}>
-              <img src={kutuzovSityImg} alt="Кутузов Сити ЖК" loading="lazy" decoding="async" />
+              <OptimizedImage src={kutuzovSityImg} alt="Кутузов Сити ЖК" loading="lazy" decoding="async" />
             </div>
           </article>
         </div>
