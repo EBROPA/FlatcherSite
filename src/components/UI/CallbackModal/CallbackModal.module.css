@@ -266,6 +266,8 @@
   text-align: center;
   width: min(100%, 360px);
   line-height: 1.1;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (max-width: 768px) {
@@ -289,6 +291,8 @@
   color: rgba(255, 255, 255, 0.72);
   text-align: center;
   width: min(100%, 360px);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .summaryBlock {

@@ -339,7 +339,7 @@ const buildQuerySummary = (overrides = {}) => {
               <p className={styles.leftDescription}>
                 Ваш комфорт — наша цель<br />
                 мы подбираем лучшие варианты<br />
-                жилья и обеспечиваем<br />
+                недвижимости и обеспечиваем<br />
                 обслуживание на высшем уровне
               </p>
             </div>
