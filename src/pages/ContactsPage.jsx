@@ -30,25 +30,6 @@ export default function ContactsPage() {
         </p>
       </div>
 
-      <div className={styles.card}>
-        <h2 className={styles.title}>Реквизиты</h2>
-        <div className={styles.divider} />
-
-        <dl className={styles.detailsList}>
-          <div className={styles.detailsItem}>
-            <dt className={styles.dt}>Дата регистрации</dt>
-            <dd className={styles.dd}>28.03.2025</dd>
-          </div>
-          <div className={styles.detailsItem}>
-            <dt className={styles.dt}>ИНН</dt>
-            <dd className={styles.dd}>772465913434</dd>
-          </div>
-          <div className={styles.detailsItem}>
-            <dt className={styles.dt}>ОГРНИП</dt>
-            <dd className={styles.dd}>325774600205503</dd>
-          </div>
-        </dl>
-      </div>
       </div>
   );
 }
