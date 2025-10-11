@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
-Host: https://flatcher.su
+Host: flatcher.su
 
 Sitemap: https://flatcher.su/sitemap.xml
 
+# Prevent bots from caching old previews aggressively
+# Some crawlers honor this, not standard but harmless
+Cache-delay: 10
