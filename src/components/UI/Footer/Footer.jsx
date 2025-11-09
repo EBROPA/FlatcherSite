@@ -46,18 +46,6 @@ export default function Footer() {
         </div>
 
         <div className={styles.primaryRow}>
-          <nav className={styles.links} aria-label="Footer navigation">
-            <ul className={styles.linkCol}>
-              <li><a href="/company">О компании</a></li>
-              <li><a href="/contacts">Контакты</a></li>
-              <li><a href="/company#team">Команда</a></li>
-            </ul>
-            <ul className={styles.linkCol}>
-              <li><a href="/flats">Новостройки</a></li>
-              <li><a href="/services">Услуги</a></li>
-            </ul>
-          </nav>
-
           <div className={styles.phoneBlock}>
             <a className={styles.phone} href="tel:+74950322199">+7 (495) 032-21-99</a>
             <button type="button" className={styles.callBtn} onClick={handleCtaClick}>ЗАКАЗАТЬ ЗВОНОК</button>
